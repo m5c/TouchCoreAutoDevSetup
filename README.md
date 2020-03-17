@@ -4,7 +4,7 @@
 
 [TouchCORE](http://touchcore.cs.mcgill.ca/) is a multi-touch enabled software modeling tool, developed at McGill University.
 A working dev-environment for TouchCORE is subject to many implicit version constraints, such as the right Eclipse version, plugins, JDK and also IDE settings.  
-This repository hosts [bash script](touchcore-init.sh) for an automated and reliable workstation setup.
+This repository hosts a [bash script](touchcore-init.sh) for an automated and reliable workstation setup.
 
 ## Features
 
@@ -31,6 +31,8 @@ Furthermore, depending on your system and the required actions it may download a
  * ```./touchcore-init.sh -p``` *Run a full installation in pretend mode, only showing what would be done to the system.*
  * ```./touchcore-init.sh``` *Run a full installation, but request a backup before actually modifying the system.*
  * ```./touchcore-init.sh -iknowwhatiamdoing``` *Run a full installation, brutally replacing any installation/configuration that may exist.*
+
+*Note:* The script was developed specifically for MacOS and will not work on other UNIX-like systems.
 
 ## Author
 
