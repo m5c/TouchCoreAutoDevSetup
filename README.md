@@ -34,6 +34,13 @@ Furthermore, depending on your system and the required actions it may download a
 
 *Note:* The script was developed specifically for MacOS and will not work on other UNIX-like systems.
 
+## Known Bugs
+
+ * brew currently lags slighlty behind the official Eclipse Modeling release
+   * Most recent without brew: 4.14.0
+   * Most recent with brew: 4.13.0  
+Some aird files complain about a sirius conflict, if not opened with the most recent eclipse version. So far a workaraound is to open the aird as xml and manually downgrade the sirius version number.
+
 ## Author
 
 Maximilian Schiedermeier  
