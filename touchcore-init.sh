@@ -23,9 +23,7 @@
 # Cask ruby file for homebrew / java8
 JAVARUBY=https://raw.githubusercontent.com/AdoptOpenJDK/homebrew-openjdk/19d716f1c9ebc325ed23c5df580e0d2b027285a1/Casks/adoptopenjdk8.rb
 # Cask ruby file for homebrew / eclipse modeling 2019-09
-ECLIPSEVERSION=2019-09
-ECLIPSERUBY=eclipse-modeling
-#ECLIPSERUBY=https://raw.githubusercontent.com/Homebrew/homebrew-cask/31c955e9d598aea8b43f832090ed98c3edcfdf3f/Casks/eclipse-modeling.rb
+ECLIPSEVERSION=2019-12
 # Eclipse plugin version numbers
 ACCELEOVERSION=3.7.8.201902261618
 # OCL requires splitup, because the files created in the installation do not respect the full verison convention. So to detect preinstalled versions, we need two strings.
@@ -36,6 +34,7 @@ XTEXTVERSION=2.19.0.v20190902
 XTEXTVERSIONSUFFIX="-1322"
 CDTVERSIONPREFIX="9.9.0."
 CDTVERSION=201909091956
+BASEPATH=$(pwd)
 
 function disclaimer()
 {
@@ -142,8 +141,8 @@ function checkoutcode
 # makes sure that version 4.13.0 of the eclipse mdoeling version is installed
 function eclipseinstall
 {
-	# TODO: Check version.
 	# check if the modeling verison of eclipse is installed
+	cd $BASEPATH
 	if [ ! -d /Applications/Eclipse\ Modeling.app/ ]; then
 		echo " * Installing Eclipse Modeling version to /Applications/Eclipse Modeling.app/"
 		if [ -z "$PRETEND" ] ; then
@@ -154,23 +153,23 @@ function eclipseinstall
 		    else
  		      rm -rf /Applications/Eclipse-Modeling.app/
                     fi
-		    brew cask install $ECLIPSERUBY
+		    brew cask install ./eclipse-modeling.rb
 		fi
 	else
 		
 		# check if the installed version is the right one
-		INSTALLEDECLIPSE=$(cat /Applications/Eclipse\ Modeling.app/Contents/Info.plist | grep -A2 CFBundleVersion | grep string | cut -c 11-31)
-		if [ ! "$INSTALLEDECLIPSE" = "4.13.0.I20190916-1045" ]; then
-		  echo " * Replacing installed eclipse by v4.12.0 / 2019-09R"
+		INSTALLEDECLIPSE=$(cat /Applications/Eclipse\ Modeling.app/Contents/Info.plist | grep -A2 CFBundleVersion | grep string | cut -c 13-33)
+		if [ ! "$INSTALLEDECLIPSE" = "4.14.0.I20191210-0610" ]; then
+		  echo " * Replacing installed eclipse by $ECLIPSEVERSION"
 		  if [ -z "$PRETEND" ] ; then
 		    # check if existing version was installed by brew
 		    brew cask info eclipse-modeling > /dev/null
 		    BREWINSTALLED=$?
 		    if [ $BREWINSTALLED -eq 0 ] ; then
-    		      brew cask reinstall $ECLIPSERUBY
+    		      brew cask reinstall ./eclipse-modeling.rb
 		    else
  		      rm -rf /Applications/Eclipse-Modeling.app/
-		      brew cask install $ECLIPSERUBY
+		      brew cask install ./eclipse-modeling.rb
                     fi
 		  fi
 		else
