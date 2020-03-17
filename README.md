@@ -20,7 +20,7 @@ The auto-installer performs the identical steps as a [manual workstation setup](
  * Auto configure eclipse / plugin settings
  * Import TouchCORE projects into workspace 
 
-Furthermore, depending on your system and the required actions it may download additional tools, such as [brew](https://brew.sh/). [eclipse-CDT](https://www.eclipse.org/cdt/) and [wget](https://www.gnu.org/software/wget/).
+Furthermore, depending on your system and the required actions it may download additional tools, such as [brew](https://brew.sh/), [eclipse-CDT](https://www.eclipse.org/cdt/) and [wget](https://www.gnu.org/software/wget/).
 
 *Note:* The installer modifies configuration files within the eclipse installation. This leads to a signature mismatch of the app. Depending on your system settings you may be asked for your password to override the MacOS integrity protection.
 
