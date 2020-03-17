@@ -22,17 +22,20 @@
 
 # Cask ruby file for homebrew / java8
 JAVARUBY=https://raw.githubusercontent.com/AdoptOpenJDK/homebrew-openjdk/19d716f1c9ebc325ed23c5df580e0d2b027285a1/Casks/adoptopenjdk8.rb
-# Cask ruby file for homebrew / eclipse modeling 2019-06
-ECLIPSERUBY=https://raw.githubusercontent.com/Homebrew/homebrew-cask/e26aefd1a39fa5a01825da1459bf785179d84b9e/Casks/eclipse-modeling.rb
+# Cask ruby file for homebrew / eclipse modeling 2019-09
+ECLIPSEVERSION=2019-09
+ECLIPSERUBY=eclipse-modeling
+#ECLIPSERUBY=https://raw.githubusercontent.com/Homebrew/homebrew-cask/31c955e9d598aea8b43f832090ed98c3edcfdf3f/Casks/eclipse-modeling.rb
 # Eclipse plugin version numbers
 ACCELEOVERSION=3.7.8.201902261618
 # OCL requires splitup, because the files created in the installation do not respect the full verison convention. So to detect preinstalled versions, we need two strings.
-OCLVERSIONPREFIX="6.8.0."
-OCLVERSION=v20190603-1146
+OCLVERSIONPREFIX="6.9.0."
+OCLVERSION=v20190910-0937
 # Alike OCL, XTEXT files do not strictly follow the version convention. We need to strings to lookup existing installations
-XTEXTVERSION=2.18.0.v20190528
-XTEXTVERSIONSUFFIX="-0716"
-CDTVERSION=9.8.0.201906071757
+XTEXTVERSION=2.19.0.v20190902
+XTEXTVERSIONSUFFIX="-1322"
+CDTVERSIONPREFIX="9.9.0."
+CDTVERSION=201909091956
 
 function disclaimer()
 {
@@ -148,18 +151,18 @@ function eclipseinstall
 		    brew cask info eclipse-modeling > /dev/null
 		    BREWINSTALLED=$?
 		    if [ $BREWINSTALLED -eq 0 ] ; then
-    		      brew cask reinstall $ECLIPSERUBY
+    		      brew cask uninstall eclipse-modeling
 		    else
  		      rm -rf /Applications/Eclipse-Modeling.app/
-		      brew cask install $ECLIPSERUBY
                     fi
+		    brew cask install $ECLIPSERUBY
 		fi
 	else
 		
 		# check if the installed version is the right one
 		INSTALLEDECLIPSE=$(cat /Applications/Eclipse\ Modeling.app/Contents/Info.plist | grep -A2 CFBundleVersion | grep string | cut -c 11-31)
-		if [ ! "$INSTALLEDECLIPSE" = "4.12.0.I20190605-1800" ]; then
-		  echo " * Replacing installed eclipse by v4.12.0"
+		if [ ! "$INSTALLEDECLIPSE" = "4.13.0.I20190916-1045" ]; then
+		  echo " * Replacing installed eclipse by v4.12.0 / 2019-09R"
 		  if [ -z "$PRETEND" ] ; then
 		    # check if existing version was installed by brew
 		    brew cask info eclipse-modeling > /dev/null
@@ -182,12 +185,12 @@ function eclipseinstall
 function eclipseplugins()
 {
     # acceleo
-    if ls /Applications/Eclipse\ Modeling.app/Contents/Eclipse/plugins/org.eclipse.acceleo.common_*jar 1> /dev/null 2>&1; then
+    if ls /Applications/Eclipse\ Modeling.app/Contents/Eclipse/plugins/org.eclipse.acceleo.common_$ACCELEOVERSION.jar 1> /dev/null 2>&1; then
 	echo " * Skipping installation of Acceleo Eclipse-Plugin"
     else
 	    echo " * Installing Acceleo Eclipse-Plugin"
 	    if [ -z "$PRETEND" ] ; then
-	      /Applications/Eclipse\ Modeling.app/Contents/MacOS/eclipse -nosplash -application org.eclipse.equinox.p2.director -repository http://download.eclipse.org/releases/2019-06 -installIU org.eclipse.acceleo.feature.group/$ACCELEOVERSION
+	      /Applications/Eclipse\ Modeling.app/Contents/MacOS/eclipse -nosplash -application org.eclipse.equinox.p2.director -repository http://download.eclipse.org/releases/$ECLIPSEVERSION -installIU org.eclipse.acceleo.feature.group/$ACCELEOVERSION
 	    fi
     fi
 
@@ -197,7 +200,7 @@ function eclipseplugins()
     else
 	    echo " * Installing OCL Eclipse-Plugin"
 	    if [ -z "$PRETEND" ] ; then
-	      /Applications/Eclipse\ Modeling.app/Contents/MacOS/eclipse -nosplash -application org.eclipse.equinox.p2.director -repository http://download.eclipse.org/releases/2019-06 -installIU org.eclipse.ocl.examples.feature.group/$OCLVERSIONPREFIX$OCLVERSION
+	      /Applications/Eclipse\ Modeling.app/Contents/MacOS/eclipse -nosplash -application org.eclipse.equinox.p2.director -repository http://download.eclipse.org/releases/$ECLIPSEVERSION -installIU org.eclipse.ocl.examples.feature.group/$OCLVERSIONPREFIX$OCLVERSION
 	    fi
     fi
 
@@ -207,17 +210,17 @@ function eclipseplugins()
     else
 	    echo " * Installing Xtext Eclipse-Plugin"
 	    if [ -z "$PRETEND" ] ; then
-      /Applications/Eclipse\ Modeling.app/Contents/MacOS/eclipse -nosplash -application org.eclipse.equinox.p2.director -repository http://download.eclipse.org/releases/2019-06 -installIU org.eclipse.xtext.sdk.feature.group/$XTEXTVERSION$XTEXTVERSIONSUFFIX
+      /Applications/Eclipse\ Modeling.app/Contents/MacOS/eclipse -nosplash -application org.eclipse.equinox.p2.director -repository http://download.eclipse.org/releases/$ECLIPSEVERSION -installIU org.eclipse.xtext.sdk.feature.group/$XTEXTVERSION$XTEXTVERSIONSUFFIX
 	    fi
     fi
 
-    # CDT
-    if ls /Applications/Eclipse\ Modeling.app/Contents/Eclipse/plugins/org.eclipse.cdt.core.macosx_*jar 1> /dev/null 2>&1; then
+    # CDT -> c/c++ development tools (non sdk)
+    if ls /Applications/Eclipse\ Modeling.app/Contents/Eclipse/plugins/org.eclipse.cdt_$CDTVERSIONPREFIX*.jar 1> /dev/null 2>&1; then
 	echo " * Skipping installation of CDT Eclipse-Plugin"
     else
 	    echo " * Installing CDT Eclipse-Plugin"
 	    if [ -z "$PRETEND" ] ; then
-	      /Applications/Eclipse\ Modeling.app/Contents/MacOS/eclipse -nosplash -application org.eclipse.equinox.p2.director -repository http://download.eclipse.org/releases/2019-06 -installIU org.eclipse.cdt.feature.group/$CDTVERSION
+	      /Applications/Eclipse\ Modeling.app/Contents/MacOS/eclipse -nosplash -application org.eclipse.equinox.p2.director -repository http://download.eclipse.org/releases/$ECLIPSEVERSION -installIU org.eclipse.cdt.feature.group/$CDTVERSIONPREFIX$CDTVERSION
 	    fi
     fi
 
@@ -327,34 +330,37 @@ function configurecs()
 # Requires eclipse CDT sdk plugin to work
 function projectimport()
 {
-	#TODO: run check if already imported.
-
-	echo " * Importing projects into workspace"
-        if [ -z "$PRETEND" ] ; then
-		for i in ~/Code/core/ca.mcgill*
-		  do 
-		  # skip the gui project - it is a phantom
-		  if [[ "$i" == *"$ca.mcgill.sel.core.gui"* ]]; then
-		        continue;
-		  fi
-		  # TODO: skip import if already imported
-		  /Applications/Eclipse\ Modeling.app/Contents/MacOS/eclipse -nosplash -data ~/touchcore-workspace/ -application org.eclipse.cdt.managedbuilder.core.headlessbuild -import $i &>/dev/null
-		  echo -n "."
-		done
-		for i in ~/Code/touchram/ca.mcgill*
-		  do 
-		  # skip the ucm projects (currently not building)
-		  if [[ "$i" == *"$ca.mcgill.sel.ucm"* ]]; then
-		        continue;
-		  fi
-		  # skip the ram editor project - it is a phantom
-		  if [[ "$i" == *"$ca.mcgill.sel.ram.editor"* ]]; then
-		        continue;
-		  fi
-		  /Applications/Eclipse\ Modeling.app/Contents/MacOS/eclipse -nosplash -data ~/touchcore-workspace/ -application org.eclipse.cdt.managedbuilder.core.headlessbuild -import $i &>/dev/null
-		  echo -n "."
-		done
-		echo ""
+	# run check if already imported.
+	if [ ! -f ~/touchcore-workspace/.metadata/.plugins/org.eclipse.core.resources/.projects/ca.mcgill.sel.ram.gui/.location ]; then
+		echo " * Importing projects into workspace"
+		if [ -z "$PRETEND" ] ; then
+			for i in ~/Code/core/ca.mcgill*
+			  do 
+			  # skip the gui project - it is a phantom
+			  if [[ "$i" == *"$ca.mcgill.sel.core.gui"* ]]; then
+				continue;
+			  fi
+			  # TODO: skip import if already imported
+			  /Applications/Eclipse\ Modeling.app/Contents/MacOS/eclipse -nosplash -data ~/touchcore-workspace/ -application org.eclipse.cdt.managedbuilder.core.headlessbuild -import $i &>/dev/null
+			  echo -n "."
+			done
+			for i in ~/Code/touchram/ca.mcgill*
+			  do 
+			  # skip the ucm projects (currently not building)
+			  if [[ "$i" == *"$ca.mcgill.sel.ucm"* ]]; then
+				continue;
+			  fi
+			  # skip the ram editor project - it is a phantom
+			  if [[ "$i" == *"$ca.mcgill.sel.ram.editor"* ]]; then
+				continue;
+			  fi
+			  /Applications/Eclipse\ Modeling.app/Contents/MacOS/eclipse -nosplash -data ~/touchcore-workspace/ -application org.eclipse.cdt.managedbuilder.core.headlessbuild -import $i &>/dev/null
+			  echo -n "."
+			done
+			echo ""
+		fi
+	else
+		echo " * Skipping import of projects into workspace"
 	fi
 }
 
