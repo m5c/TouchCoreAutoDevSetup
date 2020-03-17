@@ -25,15 +25,16 @@ JAVARUBY=https://raw.githubusercontent.com/AdoptOpenJDK/homebrew-openjdk/19d716f
 # Cask ruby file for homebrew / eclipse modeling 2019-09
 ECLIPSEVERSION=2019-12
 # Eclipse plugin version numbers
-ACCELEOVERSION=3.7.8.201902261618
-# OCL requires splitup, because the files created in the installation do not respect the full verison convention. So to detect preinstalled versions, we need two strings.
-OCLVERSIONPREFIX="6.9.0."
-OCLVERSION=v20190910-0937
-# Alike OCL, XTEXT files do not strictly follow the version convention. We need to strings to lookup existing installations
-XTEXTVERSION=2.19.0.v20190902
-XTEXTVERSIONSUFFIX="-1322"
-CDTVERSIONPREFIX="9.9.0."
-CDTVERSION=201909091956
+ACCELEOVERSION=3.7.9.201911060712
+# OCL requires splitup, because the files created in the installation do not respect the full verison convention. So to detect preinstalled versions, we need two strings. => OCL Examples and Editors SDK
+OCLVERSIONPREFIX="6.10.0."
+OCLVERSION=v20191209-1145
+# Alike OCL, XTEXT files do not strictly follow the version convention. We need to strings to lookup existing installations => Xtext Complete SDK
+XTEXTVERSION=2.20.0.v20191202
+XTEXTVERSIONSUFFIX="-1256"
+# CDT => c/c++ development tools (non sdk)
+CDTVERSIONPREFIX="9.10.0."
+CDTVERSION=201912051559
 BASEPATH=$(pwd)
 
 function disclaimer()
@@ -212,7 +213,7 @@ function eclipseplugins()
 	    fi
     fi
 
-    # CDT -> c/c++ development tools (non sdk)
+    # CDT 
     if ls /Applications/Eclipse\ Modeling.app/Contents/Eclipse/plugins/org.eclipse.cdt_$CDTVERSIONPREFIX*.jar 1> /dev/null 2>&1; then
 	echo " * Skipping installation of CDT Eclipse-Plugin"
     else
