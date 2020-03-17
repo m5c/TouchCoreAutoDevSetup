@@ -4,11 +4,11 @@
 
 [TouchCORE](http://touchcore.cs.mcgill.ca/) is a multi-touch enabled software modeling tool, developed at McGill University.
 A working dev-environment for TouchCORE is subject to many implicit version constraints, such as the right Eclipse version, plugins, JDK and also IDE settings.  
-This repository hosts [bash script](touchcore-init.sh) for an automated and realiable workstation setup.
+This repository hosts [bash script](touchcore-init.sh) for an automated and reliable workstation setup.
 
 ## Features
 
-The auto-installer performs the steps of a [manual workstation setup](https://bitbucket.org/mcgillram/touchram/wiki/getting-started).
+The auto-installer performs the identical steps as a [manual workstation setup](https://bitbucket.org/mcgillram/touchram/wiki/getting-started).
 
  * Install compatible Java version
  * Download [TouchCore sources](https://bitbucket.org/mcgillram/touchram/src/master/) into dedicated folder
