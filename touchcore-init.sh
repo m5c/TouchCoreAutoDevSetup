@@ -148,10 +148,9 @@ function eclipseinstall
 		echo " * Installing Eclipse Modeling version to /Applications/Eclipse Modeling.app/"
 		if [ -z "$PRETEND" ] ; then
 		    # check if existing version was installed by brew
-		    brew cask info eclipse-modeling > /dev/null
-		    BREWINSTALLED=$?
-		    if [ $BREWINSTALLED -eq 0 ] ; then
-    		      brew cask uninstall eclipse-modeling
+		    brew cask info eclipse-modeling &> /dev/null
+		    if [ $? -eq 0 ] ; then
+    		      brew cask uninstall eclipse-modeling &> /dev/null
 		    else
  		      rm -rf /Applications/Eclipse-Modeling.app/
                     fi
