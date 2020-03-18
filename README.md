@@ -34,6 +34,13 @@ Furthermore, depending on your system and the required actions it may download a
 
 *Note:* The script was developed specifically for MacOS and will not work on other UNIX-like systems.
 
+## Future features
+
+ * Request user confirmation for individual installation steps, before overwriting existing information (currently only done once, at start).
+ * Profile/debug option, to only print the exact plugin/tool versions found on the current system, in a nice grid view. Possibly also indicating where it differs from the suggested setup.
+ * Parameters to only perform individual stages of the installation procedure.
+ * Automatically switch IDE to classic theme, for better compatibility with sirius / diagram views.
+
 ## Author
 
 Maximilian Schiedermeier  
