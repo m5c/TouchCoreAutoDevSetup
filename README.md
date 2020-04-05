@@ -30,16 +30,14 @@ Furthermore, depending on your system and the required actions it may download a
 
  * ```./touchcore-init.sh -p``` *Run a full installation in pretend mode, only showing what would be done to the system.*
  * ```./touchcore-init.sh``` *Run a full installation, but request a backup before actually modifying the system.*
- * ```./touchcore-init.sh -iknowwhatiamdoing``` *Run a full installation, brutally replacing any installation/configuration that may exist.*
 
 *Note:* The script was developed specifically for MacOS and will not work on other UNIX-like systems.
 
 ## Future features
 
- * Request user confirmation for individual installation steps, before overwriting existing information (currently only done once, at start).
  * Profile/debug option, to only print the exact plugin/tool versions found on the current system, in a nice grid view. Possibly also indicating where it differs from the suggested setup.
+ * Cleaner option to wipe specific parts of the installation
  * Parameters to only perform individual stages of the installation procedure.
- * Automatically switch IDE to classic theme, for better compatibility with sirius / diagram views.
 
 ## Author
 

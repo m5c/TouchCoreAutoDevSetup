@@ -273,9 +273,27 @@ org.eclipse.jdt.launching.PREF_VM_XML=<?xml version\="1.0" encoding\="UTF-8" sta
       echo "org.eclipse.jdt.core.compiler.source=1.8" >> ~/touchcore-workspace/.metadata/.plugins/org.eclipse.core.runtime/.settings/org.eclipse.jdt.core.prefs
       echo "org.eclipse.jdt.core.compiler.codegen.targetPlatform=1.8" >> ~/touchcore-workspace/.metadata/.plugins/org.eclipse.core.runtime/.settings/org.eclipse.jdt.core.prefs
     fi
-}
 
-# checkstyle is a marketplace app and as such not directly isntallable via the eclipse installer. But ther is a plugin for that
+    # disable the dark theme, for it does not work together well with sirius
+    echo " * Configuring Eclipse to just display things as they are"
+    if [ -z "$PRETEND" ] ; then
+      echo "eclipse.preferences.version=1" >> ~/touchcore-workspace/.metadata/.plugins/org.eclipse.core.runtime/.settings/org.eclipse.e4.ui.css.swt.theme.prefs
+      echo "themeid=org.eclipse.e4.ui.css.theme.e4_classic" >> ~/touchcore-workspace/.metadata/.plugins/org.eclipse.core.runtime/.settings/org.eclipse.e4.ui.css.swt.theme.prefs
+      echo "eclipse.preferences.version=1" >> ~/touchcore-workspace/.metadata/.plugins/org.eclipse.core.runtime/.settings/org.eclipse.e4.ui.workbench.renderers.swt.prefs
+      echo "enableMRU=true" >> ~/touchcore-workspace/.metadata/.plugins/org.eclipse.core.runtime/.settings/org.eclipse.e4.ui.workbench.renderers.swt.prefs
+      echo "themeEnabled=false" >> ~/touchcore-workspace/.metadata/.plugins/org.eclipse.core.runtime/.settings/org.eclipse.e4.ui.workbench.renderers.swt.prefs
+      echo "content_assist_proposals_background=255,255,255" >> ~/touchcore-workspace/.metadata/.plugins/org.eclipse.core.runtime/.settings/org.eclipse.jdt.ui.prefs
+      echo "content_assist_proposals_foreground=0,0,0" >> ~/touchcore-workspace/.metadata/.plugins/org.eclipse.core.runtime/.settings/org.eclipse.jdt.ui.prefs
+      echo "CURRENT_THEME_ID=org.eclipse.ui.r30" >> ~/touchcore-workspace/.metadata/.plugins/org.eclipse.core.runtime/.settings/org.eclipse.ui.prefs
+    fi
+
+    # disable anoying popups
+    echo " * Configuring Eclipse to respect my will and stop asking redundant questions"
+    if [ -z "$PRETEND" ] ; then
+      echo "EXIT_PROMPT_ON_CLOSE_LAST_WINDOW=false" >> ~/touchcore-workspace/.metadata/.plugins/org.eclipse.core.runtime/.settings/org.eclipse.ui.ide.prefs
+    fi
+}
+# checkstyle is a marketplace app and as such not directly isntallable via the eclipse installer. But there it is possible to just download the extension's files and extract them at the reight place, into the existing ecplise installation
 # https://github.com/budhash/install-eclipse
 function eclipsecs()
 {	
@@ -302,7 +320,7 @@ function eclipsecs()
 			cp /tmp/plugins/* /Applications/Eclipse\ Modeling.app/Contents/Eclipse/plugins/
 		fi
 	else
-		echo " * Skipping installation of checkstyle plugin"
+		echo " * Skipping installation of Checkstyle-Plugin"
 	fi
 }
 
@@ -351,8 +369,12 @@ function projectimport()
 			  fi
 			  # skip the ram editor project - it is a phantom
 			  if [[ "$i" == *"$ca.mcgill.sel.ram.editor"* ]]; then
-				continue;
+			  	continue;
 			  fi
+			  # skip all expressions projects, for they currenlty do not build
+			  #if [[ "$i" == *"$ca.mcgill.sel.ram.expressions"* ]]; then
+			  #	continue;
+			  #fi
 			  /Applications/Eclipse\ Modeling.app/Contents/MacOS/eclipse -nosplash -data ~/touchcore-workspace/ -application org.eclipse.cdt.managedbuilder.core.headlessbuild -import $i &>/dev/null
 			  echo -n "."
 			done
@@ -376,11 +398,44 @@ function autoinstaller()
 	projectimport
 }
 
+# deletes any artifacts of a previous setup, if found on disk
+function deleteEverything()
+{
+	echo " * Deleting all existing installation artifacts, code and configurations."
+
+	# delete checked out code
+	cd
+	if [ -d "Code/touchram" ]; then
+		rm -rf Code/touchram
+	fi
+	if [ -d "Code/core" ]; then
+		rm -rf Code/core
+	fi
+
+	# delete eclipse settings
+	if [ -d ".eclipse" ]; then
+		rm -rf .eclipse
+	fi
+
+	# delete custom workspace
+	if [ -d "touchcore-workspace" ]; then
+		rm -rf touchcore-workspace
+	fi
+
+	# delete eclipse installation
+	if [ -d "/Applications/Eclipse Modeling.app/" ]; then
+		rm -rf /Applications/Eclipse\ Modeling.app
+	fi
+}
+
+
 # MAIN FUNCTION
 # PRINT WELCOME MESSAGE, AWAIT BACKUP CONFIRMATION
 maccheck
-if [ "$1" = "-iknowwhatiamdoing" ]; then
+# --nqa (no questions asked) is an undocumented option to force replace all existing installation / configuration artifacts. DO NOT CALL THIS UNLESS YOU HAVE FULLY UNDERSTOOD WHAT THIS SCRIPT DOES.
+if [ "$1" = "--nqa" ]; then
 	CORRECT="y"
+	deleteEverything
 elif [ "$1" = "-p" ]; then
 	echo "You are in pretend mode. All checks are run, but no modifications are made to your system."
 	PRETEND="y"

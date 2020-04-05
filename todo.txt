@@ -1,0 +1,6 @@
+ * Ensure wget is installed
+ * Display password query warning before actually requesting password
+ * Add a "--clean" option that removes workspace+.eclipse (configs) / Eclipse+plugins (installation) / Code
+ * Silence the brew installation
+ * Add time estimator on installation start
+ * Add default runtime configuration
