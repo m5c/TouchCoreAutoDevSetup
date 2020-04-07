@@ -372,9 +372,9 @@ function projectimport()
 			  	continue;
 			  fi
 			  # skip all expressions projects, for they currenlty do not build
-			  #if [[ "$i" == *"$ca.mcgill.sel.ram.expressions"* ]]; then
+			  # if [[ "$i" == *"$ca.mcgill.sel.ram.expressions"* ]]; then
 			  #	continue;
-			  #fi
+			  # fi
 			  /Applications/Eclipse\ Modeling.app/Contents/MacOS/eclipse -nosplash -data ~/touchcore-workspace/ -application org.eclipse.cdt.managedbuilder.core.headlessbuild -import $i &>/dev/null
 			  echo -n "."
 			done
@@ -405,44 +405,125 @@ function deleteEverything()
 
 	# delete checked out code
 	cd
-	if [ -d "Code/touchram" ]; then
+	echo "   * Deleting checked out Code"
+        if [ -z "$PRETEND" ] ; then
+	  if [ -d "Code/touchram" ]; then
 		rm -rf Code/touchram
-	fi
-	if [ -d "Code/core" ]; then
+	  fi
+	  if [ -d "Code/core" ]; then
 		rm -rf Code/core
-	fi
+	  fi
+        fi
 
 	# delete eclipse settings
-	if [ -d ".eclipse" ]; then
+	echo "   * Deleting eclipse cache"
+        if [ -z "$PRETEND" ] ; then
+	  if [ -d ".eclipse" ]; then
 		rm -rf .eclipse
-	fi
+	  fi
+        fi
 
 	# delete custom workspace
-	if [ -d "touchcore-workspace" ]; then
+	echo "   * Deleting workspace"
+        if [ -z "$PRETEND" ] ; then
+	  if [ -d "touchcore-workspace" ]; then
 		rm -rf touchcore-workspace
-	fi
+	  fi
+        fi
 
 	# delete eclipse installation
-	if [ -d "/Applications/Eclipse Modeling.app/" ]; then
+	echo "   * Deleting Eclipse installation"
+        if [ -z "$PRETEND" ] ; then
+	  if [ -d "/Applications/Eclipse Modeling.app/" ]; then
 		rm -rf /Applications/Eclipse\ Modeling.app
-	fi
+	  fi
+        fi
+}
+
+function usage()
+{
+echo "TouchCORE Auto Dev Setup"
+echo "------------------------"
+echo "SYNOPSIS"
+echo "    touchcore-init [-h | -p | -nqa] [-cECWS]"
+echo "OPTIONS"
+echo "    -h | --help"
+echo "      Print this help message."
+echo "    -p | --pretend"
+echo "      Only show what would be done, without actually modifying anything."
+echo "    -nqa | --noquestionsasked"
+echo "      Erase anything that might conflict a clean installation and reinstall, without any further user interactions."
+echo "    -c | --clean"
+echo "      Remove all conflicting installation artifacts before running the installation."
+#echo "      E: Remove eclipse installation and all plugins. (/Applications/Eclipse\ Modeling.app/)"
+#echo "      C: Remove checked out code (~/Code/touchram, ~/Code/core)"
+#echo "      W: Remove workspace (~/touchcore-workspace)
+#echo "      J: Remove Java."
+#echo "      S: Remove eclipse cache. (~/.eclipse)
 }
 
 
 # MAIN FUNCTION
-# PRINT WELCOME MESSAGE, AWAIT BACKUP CONFIRMATION
+
+# reject script execution on non-macos systems
 maccheck
-# --nqa (no questions asked) is an undocumented option to force replace all existing installation / configuration artifacts. DO NOT CALL THIS UNLESS YOU HAVE FULLY UNDERSTOOD WHAT THIS SCRIPT DOES.
-if [ "$1" = "--nqa" ]; then
+
+## parse command line arguments:
+# Note: there is an undocumented option: "--nqa" (no questions asked) is an undocumented option to force replace all existing installation / configuration artifacts.
+# DO NOT CALL WITH "--nqa" UNLESS YOU HAVE FULLY UNDERSTOOD WHAT THIS SCRIPT DOES.
+
+# No questions asked flag. If set to true, the script will brutally remove everything that potentially is in the way and perform a full isntallation, without any questions asked. Overrides all other command line options.
+NQA=
+
+# Confirm flag - the user has to confirm that she made a backup, before any change is made to the disk
+CONFIRMED=
+
+# Dummy mode flag. The script outputs verbose of all steps that would be executed without actually modifying the system.
+PRETEND=
+
+# Clean flag. If set existing installation artifacts will be removed.
+CLEAN=
+
+while [ "$1" != "" ]; do
+    case $1 in
+        -nqa | --noquestionsasked )           shift
+                                NQA=1
+                                ;;
+        -p | --pretend )           shift
+                                PRETEND=1
+                                ;;
+        -c | --clean )           shift
+                                CLEAN=1
+                                ;;
+        -h | --help )           usage
+                                exit
+                                ;;
+        * )                     usage
+                                exit 1
+    esac
+    shift
+done
+
+# actually perform installation, based on pased arguments
+if [ ! -z "$NQA" ]; then
+        echo "No questions asked..."
 	CORRECT="y"
-	deleteEverything
-elif [ "$1" = "-p" ]; then
+	deleteEverything;
+	autoinstaller;
+	exit;
+fi
+if [ ! -z "$PRETEND" ]; then
 	echo "You are in pretend mode. All checks are run, but no modifications are made to your system."
 	PRETEND="y"
 else
 	disclaimer
 fi
-if [ "$CORRECT" = "y" ] || [ "$PRETEND" = "y" ] ; then
+if [ "$CORRECT" = "y" ] || [ ! -z "$PRETEND" ] ; then
+  if [ ! -z "$CLEAN" ]; then
+          deleteEverything;
+  fi
+fi
+if [ "$CORRECT" = "y" ] || [ ! -z "$PRETEND" ] ; then
 	autoinstaller
 else
 	echo "No changes made. Exiting."	

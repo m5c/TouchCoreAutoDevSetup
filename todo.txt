@@ -4,3 +4,4 @@
  * Silence the brew installation
  * Add time estimator on installation start
  * Add default runtime configuration
+ * Auto dismiss welcome message, so that projects are shown directly
