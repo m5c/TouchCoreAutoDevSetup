@@ -30,7 +30,7 @@ Furthermore, depending on your system and the required actions it may download a
 
  * ```./touchcore-init.sh``` *Run a full installation. Request user confirmation before modifying the system.*
  * ```./touchcore-init.sh -c``` *Run a full installation. Overwrite existing configurations / installation artifacts. Request user confirmation before modifying the system.*
- * ```./touchcore-init -p``` *Run a full installation in pretend mode. Only show what would be done, without actually modifying the system. only showing what would be done to the system.*
+ * ```./touchcore-init -p``` *Run a full installation in pretend mode. Only show what would be done, without actually modifying the system.*
  * ```./touchcore-init -h``` *Print usage / synopsis.*
 
 *Note:* The script was developed specifically for MacOS and will not work on other UNIX-like systems.
