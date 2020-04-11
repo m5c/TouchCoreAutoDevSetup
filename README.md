@@ -1,10 +1,23 @@
 # TouchCORE Auto Dev Setup
 
+*-Fast forwarding to the fun part!-*
+
+![ff](ff-icon.png)
+
+
 ## About
 
-[TouchCORE](http://touchcore.cs.mcgill.ca/) is a multi-touch enabled software modeling tool, developed at McGill University.
-A working dev-environment for TouchCORE is subject to many implicit version constraints, such as the right Eclipse version, plugins, JDK and also IDE settings.  
-This repository hosts a [bash script](touchcore-init.sh) for an automated and reliable workstation setup.
+[TouchCORE](http://touchcore.cs.mcgill.ca/) is a multi-touch enabled software modeling tool, developed at McGill University.  
+*This* repository hosts an [automated installer](touchcore-init) for an uncomplicated and reliable workstation setup. So you can spend more time *on the fun part*, such as meta-modeling...
+
+![happy3](happy3.jpg)
+
+## Again, why would I want that?
+
+A working dev-environment for TouchCORE is subject to many implicit version constraints, such as the right Eclipse version, plugins, JDK and also IDE settings. A [manual configuration](https://bitbucket.org/mcgillram/touchram/wiki/getting-started) is time consuming and tedious...
+
+![ihateuiconfigs](ihateuiconfigs.jpg)
+*Image credits: [unsplash.com](https://unsplash.com/photos/oMpknr7yi7g)*
 
 ## Features
 
@@ -28,20 +41,14 @@ Furthermore, depending on your system and the required actions it may download a
 
 **Warning:** This tool may overwrite existing eclipse installations and configurations. It is highly recommended to make a full system backup before usage.
 
+ * ```./touchcore-init -h``` *Print usage / synopsis.*
+ * ```./touchcore-init -p``` *Run a full installation in pretend mode. Only show what would be done, without actually modifying the system.*
  * ```./touchcore-init``` *Run a full installation. Request user confirmation before modifying the system.*
  * ```./touchcore-init -c``` *Run a full installation. Overwrite existing configurations / installation artifacts. Request user confirmation before modifying the system.*
- * ```./touchcore-init -p``` *Run a full installation in pretend mode. Only show what would be done, without actually modifying the system.*
- * ```./touchcore-init -h``` *Print usage / synopsis.*
 
 *Note:* The script was developed specifically for MacOS and will not work on other UNIX-like systems.
 
-## Future features
-
- * Profile/debug option, to only print the exact plugin/tool versions found on the current system, in a nice grid view. Possibly also indicating where it differs from the suggested setup.
- * Cleaner option to wipe specific parts of the installation
- * Parameters to only perform individual stages of the installation procedure.
-
-## Author
+## Author / Pull requests
 
 Maximilian Schiedermeier  
 first.last@mcgill.ca

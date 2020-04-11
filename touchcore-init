@@ -81,6 +81,19 @@ function brewinstall
 	fi
 }
 
+function wgetinstall
+{
+	WGETPATH=$(command -v wget)
+	if [ -z "$WGETPATH" ];then
+		echo " * Installing wget"
+		if [ -z "$PRETEND" ] ; then
+			brew install wget
+		fi
+	else
+		echo " * Skipping installation of wget"
+	fi
+}
+
 function javainstall
 {
 	# check if required version is java 8 present	
@@ -303,14 +316,8 @@ function eclipsecs()
 		
 		if [ -z "$PRETEND" ] ; then
 			# not from official repo. Bash installer therefore rejects the plugin. But we can transplant the content manually into the eclipse installation.
-			# install wget if not yet installed
-			WGETPATH=$(command -v brew)
-			if [ -z "WGETPATH" ];then
-				if [ -z "$PRETEND" ] ; then
-					brew install wget
-				fi
-			fi
-			
+			wgetinstall
+
 			# get the checkstyle plugin, v 8.29.0.202001290016
 			wget -q --show-progress --progress=bar:force -O /tmp/checkstyle.zip https://bintray.com/eclipse-cs/eclipse-cs/download_file?file_path=update-site-archive%2Fnet.sf.eclipsecs-updatesite_8.29.0.202001290016.zip 2>&1
 			unzip -qq -o /tmp/checkstyle.zip -d /tmp
@@ -505,6 +512,7 @@ while [ "$1" != "" ]; do
 done
 
 # actually perform installation, based on pased arguments
+# special case "nqa": ignore all other options, erase everything and reinstall from scratch
 if [ ! -z "$NQA" ]; then
         echo "No questions asked..."
 	CORRECT="y"
@@ -512,6 +520,8 @@ if [ ! -z "$NQA" ]; then
 	autoinstaller;
 	exit;
 fi
+
+# the standard installer:
 if [ ! -z "$PRETEND" ]; then
 	echo "You are in pretend mode. All checks are run, but no modifications are made to your system."
 	PRETEND="y"
@@ -519,12 +529,10 @@ else
 	disclaimer
 fi
 if [ "$CORRECT" = "y" ] || [ ! -z "$PRETEND" ] ; then
-  if [ ! -z "$CLEAN" ]; then
+        if [ ! -z "$CLEAN" ]; then
           deleteEverything;
-  fi
-fi
-if [ "$CORRECT" = "y" ] || [ ! -z "$PRETEND" ] ; then
-	autoinstaller
+        fi
+        autoinstaller
 else
 	echo "No changes made. Exiting."	
 	exit 1
