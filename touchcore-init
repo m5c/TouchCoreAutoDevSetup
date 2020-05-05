@@ -294,10 +294,11 @@ org.eclipse.jdt.launching.PREF_VM_XML=<?xml version\="1.0" encoding\="UTF-8" sta
       echo "themeid=org.eclipse.e4.ui.css.theme.e4_classic" >> ~/touchcore-workspace/.metadata/.plugins/org.eclipse.core.runtime/.settings/org.eclipse.e4.ui.css.swt.theme.prefs
       echo "eclipse.preferences.version=1" >> ~/touchcore-workspace/.metadata/.plugins/org.eclipse.core.runtime/.settings/org.eclipse.e4.ui.workbench.renderers.swt.prefs
       echo "enableMRU=true" >> ~/touchcore-workspace/.metadata/.plugins/org.eclipse.core.runtime/.settings/org.eclipse.e4.ui.workbench.renderers.swt.prefs
-      echo "themeEnabled=false" >> ~/touchcore-workspace/.metadata/.plugins/org.eclipse.core.runtime/.settings/org.eclipse.e4.ui.workbench.renderers.swt.prefs
+      # themes should be enabled, but set to default
+#      echo "themeEnabled=false" >> ~/touchcore-workspace/.metadata/.plugins/org.eclipse.core.runtime/.settings/org.eclipse.e4.ui.workbench.renderers.swt.prefs
       echo "content_assist_proposals_background=255,255,255" >> ~/touchcore-workspace/.metadata/.plugins/org.eclipse.core.runtime/.settings/org.eclipse.jdt.ui.prefs
       echo "content_assist_proposals_foreground=0,0,0" >> ~/touchcore-workspace/.metadata/.plugins/org.eclipse.core.runtime/.settings/org.eclipse.jdt.ui.prefs
-      echo "CURRENT_THEME_ID=org.eclipse.ui.r30" >> ~/touchcore-workspace/.metadata/.plugins/org.eclipse.core.runtime/.settings/org.eclipse.ui.prefs
+#      echo "CURRENT_THEME_ID=org.eclipse.ui.r30" >> ~/touchcore-workspace/.metadata/.plugins/org.eclipse.core.runtime/.settings/org.eclipse.ui.prefs
     fi
 
     # disable anoying popups
@@ -331,7 +332,7 @@ function eclipsecs()
 	fi
 }
 
-# forces the right checstyle configuration file to be used, without any clicking
+# forces the right checkstyle configuration file to be used, without any clicking
 function configurecs()
 {
 	if [ ! -f ~/touchcore-workspace/.metadata/.plugins/net.sf.eclipsecs.core/checkstyle-config.xml ]; then
@@ -453,7 +454,7 @@ echo "TouchCORE Auto Dev Setup"
 echo "------------------------"
 echo "SYNOPSIS"
 echo "    touchcore-init [-h | -p | -nqa] [-cECWS]"
-echo "OPTIONS"
+echo "OPTIONS (flags can not be combined)"
 echo "    -h | --help"
 echo "      Print this help message."
 echo "    -p | --pretend"
@@ -462,11 +463,6 @@ echo "    -nqa | --noquestionsasked"
 echo "      Erase anything that might conflict a clean installation and reinstall, without any further user interactions."
 echo "    -c | --clean"
 echo "      Remove all conflicting installation artifacts before running the installation."
-#echo "      E: Remove eclipse installation and all plugins. (/Applications/Eclipse\ Modeling.app/)"
-#echo "      C: Remove checked out code (~/Code/touchram, ~/Code/core)"
-#echo "      W: Remove workspace (~/touchcore-workspace)
-#echo "      J: Remove Java."
-#echo "      S: Remove eclipse cache. (~/.eclipse)
 }
 
 
@@ -476,8 +472,6 @@ echo "      Remove all conflicting installation artifacts before running the ins
 maccheck
 
 ## parse command line arguments:
-# Note: there is an undocumented option: "--nqa" (no questions asked) is an undocumented option to force replace all existing installation / configuration artifacts.
-# DO NOT CALL WITH "--nqa" UNLESS YOU HAVE FULLY UNDERSTOOD WHAT THIS SCRIPT DOES.
 
 # No questions asked flag. If set to true, the script will brutally remove everything that potentially is in the way and perform a full isntallation, without any questions asked. Overrides all other command line options.
 NQA=
