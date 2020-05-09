@@ -48,6 +48,14 @@ Furthermore, depending on your system and the required actions it may download a
 
 *Note:* The script was developed specifically for MacOS and will not work on other UNIX-like systems.
 
+## Default locations
+
+The auto installer places files at specific locations. It will only search and detect existing installation artifacts, if the following conventions are respected:
+
+ * *Eclipse, Modeling Version* installed at ```/Applications/Eclipse\ Modeling.app/```
+ * *Sources* at ```~/Code/core/``` and ```~/Code/touchram/```
+ * *Eclipse workspace* at ```~/touchcore-workspace/```
+
 ## Author / Pull requests
 
 Maximilian Schiedermeier  
