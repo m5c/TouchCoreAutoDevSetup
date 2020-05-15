@@ -59,7 +59,7 @@ function maccheck
 }
 
 
-function maccheck
+function admincheck
 {
 	if ! groups $username | grep -q -w admin;
 	then
@@ -481,7 +481,7 @@ echo "      Remove all conflicting installation artifacts before running the ins
 # reject script execution on non-macos systems
 maccheck
 
-# reject script exection if called has no admin priviledges
+# reject script exection if caller has no admin priviledges
 admincheck
 
 ## parse command line arguments:
