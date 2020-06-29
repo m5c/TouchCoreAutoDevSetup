@@ -59,6 +59,16 @@ function maccheck
 	fi
 }
 
+
+function admincheck
+{
+	if ! groups $username | grep -q -w admin;
+	then
+	    echo "$(whoami) has no admin priviledges.";
+	    exit -1;
+	fi
+}
+
 # manipulation of installed apps requires spctl to be disbaled. This is required to manipulate default settings in the eclipse application, after ihas been installed.
 function spctlcheck
 {
@@ -485,6 +495,9 @@ echo "      Remove all conflicting installation artifacts before running the ins
 
 # reject script execution on non-macos systems
 maccheck
+
+# reject script exection if caller has no admin priviledges
+admincheck
 
 ## parse command line arguments:
 
