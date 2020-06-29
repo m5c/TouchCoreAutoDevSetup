@@ -1,4 +1,5 @@
 #!/bin/bash
+set -x
 
 # Touch/Ram/Core setup script.
 # @author max.schiedermeier@mcgill.ca
@@ -406,46 +407,58 @@ function autoinstaller()
 	projectimport
 }
 
-# deletes any artifacts of a previous setup, if found on disk
-function deleteEverything()
+# deletese all eclipse artefacts that reside in user homedir
+function deleteUserConfigs()
 {
-	echo " * Deleting all existing installation artifacts, code and configurations."
-
-	# delete checked out code
-	cd
-	echo "   * Deleting checked out Code"
-        if [ -z "$PRETEND" ] ; then
-	  if [ -d "Code/touchram" ]; then
-		rm -rf Code/touchram
-	  fi
-	  if [ -d "Code/core" ]; then
-		rm -rf Code/core
-	  fi
-        fi
-
+	echo " * Deleting all existing installation artifacts / configurations in homedir."
+	
 	# delete eclipse settings
 	echo "   * Deleting eclipse cache"
         if [ -z "$PRETEND" ] ; then
-	  if [ -d ".eclipse" ]; then
-		rm -rf .eclipse
+	  if [ -d ~/.eclipse ] ; then
+		rm -rf ~/.eclipse
 	  fi
         fi
 
 	# delete custom workspace
 	echo "   * Deleting workspace"
         if [ -z "$PRETEND" ] ; then
-	  if [ -d "touchcore-workspace" ]; then
-		rm -rf touchcore-workspace
+	  if [ -d ~/touchcore-workspace ] ; then
+		rm -rf ~/touchcore-workspace
+	  fi
+        fi
+
+}
+
+
+
+# deletes any artifacts of a previous setup, if found on disk
+function deleteEverything()
+{
+	echo " * Deleting all system wide installation artifacts / configurations / code."
+
+	# delete checked out code
+	cd
+	echo "   * Deleting checked out Code"
+        if [ -z "$PRETEND" ] ; then
+	  if [ -d ~/Code/touchram ]; then
+		rm -rf Code/touchram
+	  fi
+	  if [ -d ~/Code/core ]; then
+		rm -rf ~/Code/core
 	  fi
         fi
 
 	# delete eclipse installation
 	echo "   * Deleting Eclipse installation"
         if [ -z "$PRETEND" ] ; then
-	  if [ -d "/Applications/Eclipse Modeling.app/" ]; then
+	  if [ -d /Applications/Eclipse\ Modeling.app/ ]; then
 		rm -rf /Applications/Eclipse\ Modeling.app
 	  fi
         fi
+
+	# also delete local configs
+	deleteUserConfigs;
 }
 
 function usage()
@@ -453,12 +466,14 @@ function usage()
 echo "TouchCORE Auto Dev Setup"
 echo "------------------------"
 echo "SYNOPSIS"
-echo "    touchcore-init [-h | -p | -nqa] [-cECWS]"
+echo "    touchcore-init [-h | -p | -r | -nqa]"
 echo "OPTIONS (flags can not be combined)"
 echo "    -h | --help"
 echo "      Print this help message."
 echo "    -p | --pretend"
 echo "      Only show what would be done, without actually modifying anything."
+echo "    -r | --repair"
+echo "      Repair eclipse. Does not touch the plugins but resets all eclipse caches by resetting the workspace and .eclipse folder."
 echo "    -nqa | --noquestionsasked"
 echo "      Erase anything that might conflict a clean installation and reinstall, without any further user interactions."
 echo "    -c | --clean"
@@ -482,16 +497,22 @@ CONFIRMED=
 # Dummy mode flag. The script outputs verbose of all steps that would be executed without actually modifying the system.
 PRETEND=
 
-# Clean flag. If set existing installation artifacts will be removed.
+# Clean flag. If set ALL existing installation artifacts will be removed.
 CLEAN=
+
+# Repair flag. If set all local eclipse configuration artifacts will be restored
+REPAIR=
 
 while [ "$1" != "" ]; do
     case $1 in
         -nqa | --noquestionsasked )           shift
                                 NQA=1
                                 ;;
-        -p | --pretend )           shift
+        -p | --pretend )        shift
                                 PRETEND=1
+                                ;;
+        -r | --repair )         shift
+                                REPAIR=1
                                 ;;
         -c | --clean )           shift
                                 CLEAN=1
@@ -522,7 +543,12 @@ if [ ! -z "$PRETEND" ]; then
 else
 	disclaimer
 fi
-if [ "$CORRECT" = "y" ] || [ ! -z "$PRETEND" ] ; then
+
+# Repair / Reset an existing installation
+if [ "$CORRECT" = "y" ] || [ ! -z "$PRETEND" ] || [ ! -z "$REPAIR" ] ; then
+        if [ ! -z "$REPAIR" ]; then
+          deleteUserConfigs;
+        fi
         if [ ! -z "$CLEAN" ]; then
           deleteEverything;
         fi
