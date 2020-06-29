@@ -1,5 +1,4 @@
 #!/bin/bash
-set -x
 
 # Touch/Ram/Core setup script.
 # @author max.schiedermeier@mcgill.ca
@@ -69,7 +68,7 @@ function admincheck
 	fi
 }
 
-# manipulation of installed apps requires spctl to be disbaled. This is required to manipulate default settings in the eclipse application, after ihas been installed.
+# manipulation of installed apps requires spctl to be disabled. This is required to manipulate default settings in the eclipse application, after ihas been installed.
 function spctlcheck
 {
    INTEGRITYCHECKS=$(sudo spctl --status)
