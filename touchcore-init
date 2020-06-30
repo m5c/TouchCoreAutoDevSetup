@@ -403,6 +403,23 @@ function projectimport()
 	fi
 }
 
+function configurelauncher()
+{
+	# run check if already configured
+	if [ ! -f ~/touchcore-workspace/.metadata/.plugins/org.eclipse.debug.ui/launchConfigurationHistory.xml ]; then
+		echo " * Preparing TouchCORE run configuration"
+		if [ -z "$PRETEND" ] ; then
+			# Copy prepared touchcore launcher into workspace
+			mkdir -p ~/touchcore-workspace/.metadata/.plugins/org.eclipse.debug.core/.launches/
+			cp TouchCORE.launch ~/touchcore-workspace/.metadata/.plugins/org.eclipse.debug.core/.launches/
+
+			# Set TouchCORE launcher as primary history entry.
+			mkdir -p ~/touchcore-workspace/.metadata/.plugins/org.eclipse.debug.ui/
+			cp launchConfigurationHistory.xml ~/touchcore-workspace/.metadata/.plugins/org.eclipse.debug.ui/
+		fi
+	fi
+}
+
 function autoinstaller()
 {
 	brewinstall
@@ -414,6 +431,7 @@ function autoinstaller()
 	eclipseconfig
 	configurecs
 	projectimport
+	configurelauncher
 }
 
 # deletese all eclipse artefacts that reside in user homedir
