@@ -420,6 +420,17 @@ function configurelauncher()
 	fi
 }
 
+# get rid of those annoying popups on first eclipse start. At least the checkbox, if not the tab.
+function popupdismiss()
+{
+	echo " * Chasing away those annoying pop-ups"
+
+	if [ -z "$PRETEND" ] ; then
+		mkdir -p ~/touchcore-workspace/.metadata/.plugins/org.eclipse.ui.intro/
+		cp introstate ~/touchcore-workspace/.metadata/.plugins/org.eclipse.ui.intro/
+	fi
+}
+
 function autoinstaller()
 {
 	brewinstall
@@ -430,8 +441,9 @@ function autoinstaller()
 	eclipsecs
 	eclipseconfig
 	configurecs
-	projectimport
 	configurelauncher
+	popupdismiss
+	projectimport
 }
 
 # deletese all eclipse artefacts that reside in user homedir

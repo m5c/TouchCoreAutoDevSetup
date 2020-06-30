@@ -1,12 +1,5 @@
+ * Refuse to run installer if eclipse is still running 
  * Silence the brew installation
  * Add time estimator on installation start
- * Add default runtime configuration => copy to workspace/.metadata/.plugins/org.eclipse.core.runtime/.settings
- -> TpichCORE.launch goes into: touchcore-workspace/.metadata/.plugins/org.eclipse.debug.core/.launches
-   * create workspace subdir:  
-mkdir -p ~/touchcore-workspace/.metadata/.plugins/org.eclipse.debug.core/.launches
-   * mv TouchCORE.launch ~/touchcore-workspace/.metadata/.plugins/org.eclipse.debug.core/.launches/
-   * create default launcher entry: 
-cp history ~/touchcore-workspace/.metadata/.plugins/org.eclipse.debug.ui/
-~/touchcore-workspace/.metadata/.plugins/org.eclipse.core.runtime/.settings/org.eclipse.launchbar.core.prefs
  * Auto dismiss welcome message, so that projects are shown directly
  * Install (but don't configure) git plugin
