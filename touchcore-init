@@ -23,7 +23,8 @@
 # Cask ruby file for homebrew / java8
 JAVARUBY=https://raw.githubusercontent.com/AdoptOpenJDK/homebrew-openjdk/19d716f1c9ebc325ed23c5df580e0d2b027285a1/Casks/adoptopenjdk8.rb
 # Cask ruby file for homebrew / eclipse modeling 2019-09
-ECLIPSEVERSION=2019-12
+#ECLIPSEVERSION=2019-12
+ECLIPSEVERSION=2020-09
 # Eclipse plugin version numbers
 ACCELEOVERSION=3.7.9.201911060712
 # OCL requires splitup, because the files created in the installation do not respect the full verison convention. So to detect preinstalled versions, we need two strings. => OCL Examples and Editors SDK
@@ -147,7 +148,8 @@ function checkoutcode
 	if [ ! -d ~/Code/touchram ]; then
 		echo " * Cloning touchram sources into Code folder"
 		if [ -z "$PRETEND" ] ; then
-		  git clone https://bitbucket.org/mcgillram/touchram.git
+#		  git clone https://bitbucket.org/mcgillram/touchram.git
+		  echo "SKIPPED"
 		fi
 	else
 		echo " * Skipping checkout of core sources"
@@ -155,7 +157,8 @@ function checkoutcode
 	if [ ! -d ~/Code/core ]; then
 		echo " * Cloning core sources into Code folder"
 		if [ -z "$PRETEND" ] ; then
-		  git clone https://bitbucket.org/mcgillram/core.git
+#		  git clone https://bitbucket.org/mcgillram/core.git
+		  echo "SKIPPED"
 		fi
 	else
 		echo " * Skipping checkout of touchram sources"
@@ -190,7 +193,7 @@ function eclipseinstall
 		    brew cask info eclipse-modeling > /dev/null
 		    BREWINSTALLED=$?
 		    if [ $BREWINSTALLED -eq 0 ] ; then
-    		      brew cask reinstall ./eclipse-modeling.rb
+    		      brew reinstall ./eclipse-modeling.rb
 		    else
  		      rm -rf /Applications/Eclipse-Modeling.app/
 		      brew cask install ./eclipse-modeling.rb
