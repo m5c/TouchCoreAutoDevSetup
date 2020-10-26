@@ -20,7 +20,9 @@
 
 # Cask ruby file for homebrew / (java11 eclipse modeling 2019-09 requires Java 11)
 # NOTE: always use raw link INCLUDING commit-hash, to ensure a stable brew target: (11.0.9+11)
-JAVARUBY=https://raw.githubusercontent.com/AdoptOpenJDK/homebrew-openjdk/e6a0cac8a0738db90401d9483586f27ffaf30a06/Casks/adoptopenjdk11.rb
+# Eclipse 2020-09 is not compatible to 11.0.6  -> 11.0.5 os he most recent compatible.
+# DOWNLOAD cask form github raw (use specific commit to target specific version.) e.g. wget https://raw.githubusercontent.com/AdoptOpenJDK/homebrew-openjdk/582dff9b099894d042a7eb1e1418ed97ae59718e/Casks/adoptopenjdk11.rb
+JAVACASK=adoptopenjdk11.rb
 # Cask ruby file for homebrew
 ECLIPSEVERSION=2020-09
 # Exact target id of eclipe build, as stored in (cat /Applications/Eclipse\ Modeling.app/Contents/Info.plist | grep -A2 CFBundleVersion | grep string | cut -c 13-33)
@@ -110,21 +112,23 @@ function javainstall
 {
 	# check if required version of java 11 ispresent	
 	if [ ! -d /Library/Java/JavaVirtualMachines/adoptopenjdk-11.jdk/ ]; then
-		echo " * Installing Java 11.0.9+11"
+		echo " * Installing Java 11.0.5"
 		if [ -z "$PRETEND" ] ; then
-			brew cask install $JAVARUBY
+			cd $BASEPATH
+			brew cask install $JAVACASK
+			cd -
 		fi
 	else
 		# check if the preinstalled java version is the right one
-		INSTALLED_VERSION=$(cat /Library/Java/JavaVirtualMachines/adoptopenjdk-11.jdk/Contents/Info.plist | grep "AdoptOpenJDK 11" | head -n 1 | cut -c 23-31)
-		if [ ! "$INSTALLED_VERSION" = "11.0.9+11" ]; then
-			echo " * Replacing existing java 11 installation with compatible version 11.0.9+11"
+		INSTALLED_VERSION=$(cat /Library/Java/JavaVirtualMachines/adoptopenjdk-11.jdk/Contents/Info.plist | grep "AdoptOpenJDK 11" | head -n 1 | cut -c 23-28)
+		if [ ! "$INSTALLED_VERSION" = "11.0.5" ]; then
+			echo " * Replacing existing java 11 installation with compatible version 11.0.5"
 			if [ -z "$PRETEND" ] ; then
 			    brew cask uninstall adoptopenjdk11
 			    brew cask install $JAVARUBY
 			fi
 		else
-			echo " * Skipping installation/update of Java 11.0.9+11"
+			echo " * Skipping installation/update of Java 11.0.5"
 		fi
 	fi
 }
@@ -288,7 +292,7 @@ eclipse.preferences.version=1" > /Applications/Eclipse\ Modeling.app/Contents/Ec
     if [ -z "$PRETEND" ] ; then
       mkdir -p ~/touchcore-workspace/.metadata/.plugins/org.eclipse.core.runtime/.settings/
       echo 'eclipse.preferences.version=1
-org.eclipse.jdt.launching.PREF_VM_XML=<?xml version\="1.0" encoding\="UTF-8" standalone\="no"?>\n<vmSettings defaultVM\="52,org.eclipse.jdt.internal.launching.macosx.MacOSXType22,net.adoptopenjdk.11.jre">\n    <vmType id\="org.eclipse.jdt.internal.launching.macosx.MacOSXType">\n        <vm id\="net.adoptopenjdk.13.jdk" name\="AdoptOpenJDK 13 [13.0.2]" path\="/Library/Java/JavaVirtualMachines/adoptopenjdk-13.jdk/Contents/Home"/>\n        <vm id\="net.adoptopenjdk.11.jdk" name\="AdoptOpenJDK 11 [11.0.0+11]" path\="/Library/Java/JavaVirtualMachines/adoptopenjdk-11.jdk/Contents/Home"/>\n        <vm id\="net.adoptopenjdk.11.jre" name\="AdoptOpenJDK (JRE) 11 [11.0.9+11]" path\="/Library/Java/JavaVirtualMachines/adoptopenjdk-11.jre/Contents/Home"/>\n    </vmType>\n</vmSettings>\n' > ~/touchcore-workspace/.metadata/.plugins/org.eclipse.core.runtime/.settings/org.eclipse.jdt.launching.prefs
+org.eclipse.jdt.launching.PREF_VM_XML=<?xml version\="1.0" encoding\="UTF-8" standalone\="no"?>\n<vmSettings defaultVM\="52,org.eclipse.jdt.internal.launching.macosx.MacOSXType22,net.adoptopenjdk.11.jre">\n    <vmType id\="org.eclipse.jdt.internal.launching.macosx.MacOSXType">\n        <vm id\="net.adoptopenjdk.13.jdk" name\="AdoptOpenJDK 13 [13.0.2]" path\="/Library/Java/JavaVirtualMachines/adoptopenjdk-13.jdk/Contents/Home"/>\n        <vm id\="net.adoptopenjdk.11.jdk" name\="AdoptOpenJDK 11 [11.0.5]" path\="/Library/Java/JavaVirtualMachines/adoptopenjdk-11.jdk/Contents/Home"/>\n        <vm id\="net.adoptopenjdk.11.jre" name\="AdoptOpenJDK (JRE) 11 [11.0.5]" path\="/Library/Java/JavaVirtualMachines/adoptopenjdk-11.jdk/Contents/Home"/>\n    </vmType>\n</vmSettings>\n' > ~/touchcore-workspace/.metadata/.plugins/org.eclipse.core.runtime/.settings/org.eclipse.jdt.launching.prefs
     fi
 
     # make sure the correct compiler compliance is set
@@ -471,14 +475,9 @@ function deleteUserConfigs()
 
 }
 
-
-
-# deletes any artifacts of a previous setup, if found on disk
-function deleteEverything()
+# deletes the cehcked out code
+function deleteCode()
 {
-	echo " * Deleting all system wide installation artifacts / configurations / code."
-
-	# delete checked out code
 	cd
 	echo "   * Deleting checked out Code"
         if [ -z "$PRETEND" ] ; then
@@ -489,14 +488,30 @@ function deleteEverything()
 		rm -rf ~/Code/core
 	  fi
         fi
+}
 
-	# delete eclipse installation
+# deletes the eclipse base iantallation in the applications folder
+function deleteEclipse
+{
 	echo "   * Deleting Eclipse installation"
         if [ -z "$PRETEND" ] ; then
 	  if [ -d /Applications/Eclipse\ Modeling.app/ ]; then
 		rm -rf /Applications/Eclipse\ Modeling.app
 	  fi
         fi
+}
+
+
+# deletes any artifacts of a previous setup, if found on disk
+function deleteEverything()
+{
+	echo " * Deleting all system wide installation artifacts / configurations / code."
+
+	# delete checked out code
+	deleteCode;
+
+	# delete eclipse installation
+	deleteEclipse
 
 	# also delete local configs
 	deleteUserConfigs;
@@ -594,7 +609,8 @@ if [ "$CORRECT" = "y" ] || [ ! -z "$PRETEND" ] || [ ! -z "$REPAIR" ] ; then
           deleteUserConfigs;
         fi
         if [ ! -z "$CLEAN" ]; then
-          deleteEverything;
+          deleteEclipse;
+	  deleteUserConfigs
         fi
         autoinstaller
 else
