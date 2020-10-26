@@ -39,7 +39,17 @@ XTEXTVERSIONSUFFIX="-0926"
 CDTVERSIONPREFIX="10.0.0."
 CDTVERSION=202009071455
 BASEPATH=$(pwd)
-# Lambda plugin
+# Epsilon plugin -> Etea repo: "http://download.eclipse.org/epsilon/updates/2.2/" 
+# org.eclipse.epsilon.core.feature.feature.group - 1.1.0.202009032353
+# org.eclipse.epsilon.emf.feature.feature.group - 1.1.0.202009032353
+# implictly requires: org.apache.commons.math3 0.0.0 (osgi bundle)
+#	/Applications/Eclipse\ Modeling.app/Contents/MacOS/eclipse -nosplash -application org.eclipse.equinox.p2.director -repository http://download.eclipse.org/releases/2019-09/201909181001 -installIU org.apache.commons.cli/1.2.0.v201404270220
+EPSILONREPO="http://download.eclipse.org/epsilon/updates/2.2/" 
+EPSILONVERSIONPREFIX="2.2.0."
+EPSILONVERSION=202009032353
+
+# /Applications/Eclipse\ Modeling.app/Contents/MacOS/eclipse -nosplash -application org.eclipse.equinox.p2.director -repository http://download.eclipse.org/epsilon/updates/2.2/ -installIU org.eclipse.epsilon.emg.engine/2.2.0.202009032353
+# /Applications/Eclipse\ Modeling.app/Contents/MacOS/eclipse -nosplash -application org.eclipse.equinox.p2.director -repository http://download.eclipse.org/epsilon/updates/2.2/ -installIU org.eclipse.epsilon.core.feature.feature.group/2.2.0.202009032353
 
 function disclaimer()
 {
@@ -252,6 +262,16 @@ function eclipseplugins()
 	    fi
     fi
 
+    ## Epsilon
+#    if ls /Applications/Eclipse\ Modeling.app/Contents/Eclipse/plugins/org.eclipse.cdt_$CDTVERSIONPREFIX*.jar 1> /dev/null 2>&1; then
+#	echo " * Skipping installation of CDT Eclipse-Plugin"
+#    else
+#	    echo " * Installing CDT Eclipse-Plugin"
+#	    if [ -z "$PRETEND" ] ; then
+#	      /Applications/Eclipse\ Modeling.app/Contents/MacOS/eclipse -nosplash -application org.eclipse.equinox.p2.director -repository http://download.eclipse.org/releases/$ECLIPSEVERSION -installIU org.eclipse.cdt.feature.group/$CDTVERSIONPREFIX$CDTVERSION
+#	    fi
+#    fi
+
 }
 
 function eclipseconfig()
@@ -449,7 +469,7 @@ function autoinstaller()
 	configurecs
 	configurelauncher
 	popupdismiss
-	projectimport
+#	projectimport
 }
 
 # deletese all eclipse artefacts that reside in user homedir
