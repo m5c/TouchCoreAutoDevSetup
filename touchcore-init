@@ -8,7 +8,7 @@
 # print disclaimer
 # OS check
 # brew installation
-# jdk8 installation (v 1.8.232)
+# jdk-11 installation (v 1.8.232)
 # eclipse installation
 # code checkout
 # eclipse plugin installation
@@ -21,8 +21,10 @@
 # Software Version variables
 
 # Cask ruby file for homebrew / java8
-JAVARUBY=https://raw.githubusercontent.com/AdoptOpenJDK/homebrew-openjdk/19d716f1c9ebc325ed23c5df580e0d2b027285a1/Casks/adoptopenjdk8.rb
-# Cask ruby file for homebrew / eclipse modeling 2019-09
+# JAVARUBY=https://raw.githubusercontent.com/AdoptOpenJDK/homebrew-openjdk/19d716f1c9ebc325ed23c5df580e0d2b027285a1/Casks/adoptopenjdk8.rb
+# NOTE: always use raw link INCLUDING commit-hash, to ensure a stable brew target: (11.0.9+11)
+JAVARUBY=https://raw.githubusercontent.com/AdoptOpenJDK/homebrew-openjdk/e6a0cac8a0738db90401d9483586f27ffaf30a06/Casks/adoptopenjdk11.rb
+# Cask ruby file for homebrew / eclipse modeling 2019-09 - Requires Java 11
 #ECLIPSEVERSION=2019-12
 ECLIPSEVERSION=2020-09
 # Eclipse plugin version numbers
@@ -69,7 +71,7 @@ function admincheck
 	fi
 }
 
-# manipulation of installed apps requires spctl to be disabled. This is required to manipulate default settings in the eclipse application, after ihas been installed.
+# manipulation of installed apps requires spctl to be disabled. This is required to manipulate default settings in the eclipse application, after it has been installed.
 function spctlcheck
 {
    INTEGRITYCHECKS=$(sudo spctl --status)
@@ -107,23 +109,23 @@ function wgetinstall
 
 function javainstall
 {
-	# check if required version is java 8 present	
-	if [ ! -d /Library/Java/JavaVirtualMachines/adoptopenjdk-8.jdk/ ]; then
-		echo " * Installing Java 1.8.232"
+	# check if required version of java 11 ispresent	
+	if [ ! -d /Library/Java/JavaVirtualMachines/adoptopenjdk-11.jdk/ ]; then
+		echo " * Installing Java 11.0.9+11"
 		if [ -z "$PRETEND" ] ; then
 			brew cask install $JAVARUBY
 		fi
 	else
 		# check if the preinstalled java version is the right one
-		INSTALLED_VERSION=$(cat /Library/Java/JavaVirtualMachines/adoptopenjdk-8.jdk/Contents/Info.plist | grep "AdoptOpenJDK 1.8" | cut -c 23-31)
-		if [ ! "$INSTALLED_VERSION" = "1.8.0_232" ]; then
-			echo " * Replacing existing java 8 installation with compatible version 1.8.232"
+		INSTALLED_VERSION=$(cat /Library/Java/JavaVirtualMachines/adoptopenjdk-11.jdk/Contents/Info.plist | grep "AdoptOpenJDK 11" | head -n 1 | cut -c 23-31)
+		if [ ! "$INSTALLED_VERSION" = "11.0.9+11" ]; then
+			echo " * Replacing existing java 11 installation with compatible version 11.0.9+11"
 			if [ -z "$PRETEND" ] ; then
-			    brew cask uninstall adoptopenjdk8
+			    brew cask uninstall adoptopenjdk11
 			    brew cask install $JAVARUBY
 			fi
 		else
-			echo " * Skipping installation/update of Java 1.8.232"
+			echo " * Skipping installation/update of Java 11.0.9+11"
 		fi
 	fi
 }
