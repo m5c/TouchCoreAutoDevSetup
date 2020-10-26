@@ -27,6 +27,8 @@ JAVARUBY=https://raw.githubusercontent.com/AdoptOpenJDK/homebrew-openjdk/e6a0cac
 # Cask ruby file for homebrew / eclipse modeling 2019-09 - Requires Java 11
 #ECLIPSEVERSION=2019-12
 ECLIPSEVERSION=2020-09
+# Exact target id of eclipe build, as stored in (cat /Applications/Eclipse\ Modeling.app/Contents/Info.plist | grep -A2 CFBundleVersion | grep string | cut -c 13-33)
+ECLIPSE_TARGET_ID=4.17.0.I20200902-1800
 # Eclipse plugin version numbers
 ACCELEOVERSION=3.7.9.201911060712
 # OCL requires splitup, because the files created in the installation do not respect the full verison convention. So to detect preinstalled versions, we need two strings. => OCL Examples and Editors SDK
@@ -188,7 +190,7 @@ function eclipseinstall
 		
 		# check if the installed version is the right one
 		INSTALLEDECLIPSE=$(cat /Applications/Eclipse\ Modeling.app/Contents/Info.plist | grep -A2 CFBundleVersion | grep string | cut -c 13-33)
-		if [ ! "$INSTALLEDECLIPSE" = "4.14.0.I20191210-0610" ]; then
+		if [ ! "$INSTALLEDECLIPSE" = "$ECLIPSE_TARGET_ID" ]; then
 		  echo " * Replacing installed eclipse by $ECLIPSEVERSION"
 		  if [ -z "$PRETEND" ] ; then
 		    # check if existing version was installed by brew
