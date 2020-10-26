@@ -16,8 +16,6 @@
 # eclipse workspace creation and default setup
 # eclipse settings configuration (compiler version / JRE)
 
-# java: 1.8.0.232
-
 # Software Version variables
 
 # Cask ruby file for homebrew / java8
@@ -30,17 +28,18 @@ ECLIPSEVERSION=2020-09
 # Exact target id of eclipe build, as stored in (cat /Applications/Eclipse\ Modeling.app/Contents/Info.plist | grep -A2 CFBundleVersion | grep string | cut -c 13-33)
 ECLIPSE_TARGET_ID=4.17.0.I20200902-1800
 # Eclipse plugin version numbers
-ACCELEOVERSION=3.7.9.201911060712
+ACCELEOVERSION=3.7.10.202002210922
 # OCL requires splitup, because the files created in the installation do not respect the full verison convention. So to detect preinstalled versions, we need two strings. => OCL Examples and Editors SDK
-OCLVERSIONPREFIX="6.10.0."
-OCLVERSION=v20191209-1145
+OCLVERSIONPREFIX="6.12.0."
+OCLVERSION=v20200608-1555
 # Alike OCL, XTEXT files do not strictly follow the version convention. We need to strings to lookup existing installations => Xtext Complete SDK
-XTEXTVERSION=2.20.0.v20191202
-XTEXTVERSIONSUFFIX="-1256"
-# CDT => c/c++ development tools (non sdk)
-CDTVERSIONPREFIX="9.10.0."
-CDTVERSION=201912051559
+XTEXTVERSION=2.23.0.v20200831
+XTEXTVERSIONSUFFIX="-0926"
+# CDT => search for "c/c++ development tools" (non sdk)
+CDTVERSIONPREFIX="10.0.0."
+CDTVERSION=202009071455
 BASEPATH=$(pwd)
+# Lambda
 
 function disclaimer()
 {
