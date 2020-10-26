@@ -18,12 +18,10 @@
 
 # Software Version variables
 
-# Cask ruby file for homebrew / java8
-# JAVARUBY=https://raw.githubusercontent.com/AdoptOpenJDK/homebrew-openjdk/19d716f1c9ebc325ed23c5df580e0d2b027285a1/Casks/adoptopenjdk8.rb
+# Cask ruby file for homebrew / (java11 eclipse modeling 2019-09 requires Java 11)
 # NOTE: always use raw link INCLUDING commit-hash, to ensure a stable brew target: (11.0.9+11)
 JAVARUBY=https://raw.githubusercontent.com/AdoptOpenJDK/homebrew-openjdk/e6a0cac8a0738db90401d9483586f27ffaf30a06/Casks/adoptopenjdk11.rb
-# Cask ruby file for homebrew / eclipse modeling 2019-09 - Requires Java 11
-#ECLIPSEVERSION=2019-12
+# Cask ruby file for homebrew
 ECLIPSEVERSION=2020-09
 # Exact target id of eclipe build, as stored in (cat /Applications/Eclipse\ Modeling.app/Contents/Info.plist | grep -A2 CFBundleVersion | grep string | cut -c 13-33)
 ECLIPSE_TARGET_ID=4.17.0.I20200902-1800
@@ -39,7 +37,7 @@ XTEXTVERSIONSUFFIX="-0926"
 CDTVERSIONPREFIX="10.0.0."
 CDTVERSION=202009071455
 BASEPATH=$(pwd)
-# Lambda
+# Lambda plugin
 
 function disclaimer()
 {
@@ -151,8 +149,7 @@ function checkoutcode
 	if [ ! -d ~/Code/touchram ]; then
 		echo " * Cloning touchram sources into Code folder"
 		if [ -z "$PRETEND" ] ; then
-#		  git clone https://bitbucket.org/mcgillram/touchram.git
-		  echo "SKIPPED"
+		  git clone https://bitbucket.org/mcgillram/touchram.git
 		fi
 	else
 		echo " * Skipping checkout of core sources"
@@ -160,8 +157,7 @@ function checkoutcode
 	if [ ! -d ~/Code/core ]; then
 		echo " * Cloning core sources into Code folder"
 		if [ -z "$PRETEND" ] ; then
-#		  git clone https://bitbucket.org/mcgillram/core.git
-		  echo "SKIPPED"
+		  git clone https://bitbucket.org/mcgillram/core.git
 		fi
 	else
 		echo " * Skipping checkout of touchram sources"
@@ -288,19 +284,19 @@ eclipse.preferences.version=1" > /Applications/Eclipse\ Modeling.app/Contents/Ec
     fi
 
     # make sure the correct JRE path is set
-    echo " * Configuring Eclipse to use JRE 1.8 as default"
+    echo " * Configuring Eclipse to use JRE 11 as default"
     if [ -z "$PRETEND" ] ; then
       mkdir -p ~/touchcore-workspace/.metadata/.plugins/org.eclipse.core.runtime/.settings/
       echo 'eclipse.preferences.version=1
-org.eclipse.jdt.launching.PREF_VM_XML=<?xml version\="1.0" encoding\="UTF-8" standalone\="no"?>\n<vmSettings defaultVM\="52,org.eclipse.jdt.internal.launching.macosx.MacOSXType22,net.adoptopenjdk.8.jre">\n    <vmType id\="org.eclipse.jdt.internal.launching.macosx.MacOSXType">\n        <vm id\="net.adoptopenjdk.13.jdk" name\="AdoptOpenJDK 13 [13.0.2]" path\="/Library/Java/JavaVirtualMachines/adoptopenjdk-13.jdk/Contents/Home"/>\n        <vm id\="net.adoptopenjdk.8.jdk" name\="AdoptOpenJDK 8 [1.8.0_232]" path\="/Library/Java/JavaVirtualMachines/adoptopenjdk-8.jdk/Contents/Home"/>\n        <vm id\="net.adoptopenjdk.8.jre" name\="AdoptOpenJDK (JRE) 8 [1.8.0_232]" path\="/Library/Java/JavaVirtualMachines/adoptopenjdk-8.jre/Contents/Home"/>\n    </vmType>\n</vmSettings>\n' > ~/touchcore-workspace/.metadata/.plugins/org.eclipse.core.runtime/.settings/org.eclipse.jdt.launching.prefs
+org.eclipse.jdt.launching.PREF_VM_XML=<?xml version\="1.0" encoding\="UTF-8" standalone\="no"?>\n<vmSettings defaultVM\="52,org.eclipse.jdt.internal.launching.macosx.MacOSXType22,net.adoptopenjdk.11.jre">\n    <vmType id\="org.eclipse.jdt.internal.launching.macosx.MacOSXType">\n        <vm id\="net.adoptopenjdk.13.jdk" name\="AdoptOpenJDK 13 [13.0.2]" path\="/Library/Java/JavaVirtualMachines/adoptopenjdk-13.jdk/Contents/Home"/>\n        <vm id\="net.adoptopenjdk.11.jdk" name\="AdoptOpenJDK 11 [11.0.0+11]" path\="/Library/Java/JavaVirtualMachines/adoptopenjdk-11.jdk/Contents/Home"/>\n        <vm id\="net.adoptopenjdk.11.jre" name\="AdoptOpenJDK (JRE) 11 [11.0.9+11]" path\="/Library/Java/JavaVirtualMachines/adoptopenjdk-11.jre/Contents/Home"/>\n    </vmType>\n</vmSettings>\n' > ~/touchcore-workspace/.metadata/.plugins/org.eclipse.core.runtime/.settings/org.eclipse.jdt.launching.prefs
     fi
 
     # make sure the correct compiler compliance is set
-    echo " * Configuring Eclipse compiler compliance JDK 1.8"
+    echo " * Configuring Eclipse compiler compliance JDK 11"
     if [ -z "$PRETEND" ] ; then
-      echo "org.eclipse.jdt.core.compiler.compliance=1.8" >> ~/touchcore-workspace/.metadata/.plugins/org.eclipse.core.runtime/.settings/org.eclipse.jdt.core.prefs
-      echo "org.eclipse.jdt.core.compiler.source=1.8" >> ~/touchcore-workspace/.metadata/.plugins/org.eclipse.core.runtime/.settings/org.eclipse.jdt.core.prefs
-      echo "org.eclipse.jdt.core.compiler.codegen.targetPlatform=1.8" >> ~/touchcore-workspace/.metadata/.plugins/org.eclipse.core.runtime/.settings/org.eclipse.jdt.core.prefs
+      echo "org.eclipse.jdt.core.compiler.compliance=11" >> ~/touchcore-workspace/.metadata/.plugins/org.eclipse.core.runtime/.settings/org.eclipse.jdt.core.prefs
+      echo "org.eclipse.jdt.core.compiler.source=11" >> ~/touchcore-workspace/.metadata/.plugins/org.eclipse.core.runtime/.settings/org.eclipse.jdt.core.prefs
+      echo "org.eclipse.jdt.core.compiler.codegen.targetPlatform=11" >> ~/touchcore-workspace/.metadata/.plugins/org.eclipse.core.runtime/.settings/org.eclipse.jdt.core.prefs
     fi
 
     # disable the dark theme, for it does not work together well with sirius
