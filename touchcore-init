@@ -401,6 +401,10 @@ function projectimport()
 			  if [[ "$i" == *"$ca.mcgill.sel.core.gui"* ]]; then
 				continue;
 			  fi
+			  # skip the gui perspective.dsl project - it is a phantom
+			  if [[ "$i" == *"$ca.mcgill.sel.core.perspective.dsl"* ]]; then
+				continue;
+			  fi
 			  # TODO: skip import if already imported
 			  /Applications/Eclipse\ Modeling.app/Contents/MacOS/eclipse -nosplash -data ~/touchcore-workspace/ -application org.eclipse.cdt.managedbuilder.core.headlessbuild -import $i &>/dev/null
 			  echo -n "."
@@ -415,10 +419,16 @@ function projectimport()
 			  if [[ "$i" == *"$ca.mcgill.sel.ram.editor"* ]]; then
 			  	continue;
 			  fi
-			  # skip all expressions projects, for they currenlty do not build
-			  # if [[ "$i" == *"$ca.mcgill.sel.ram.expressions"* ]]; then
-			  #	continue;
-			  # fi
+			  # skip all usecasediagram projects - are phantoms
+			  if [[ "$i" == *"$ca.mcgill.sel.usecasediagram"* ]]; then
+			  	continue;
+			  fi
+			  if [[ "$i" == *"$ca.mcgill.sel.usecasediagram.controller"* ]]; then
+			  	continue;
+			  fi
+			  if [[ "$i" == *"$ca.mcgill.sel.usecasediagram.edit"* ]]; then
+			  	continue;
+			  fi
 			  /Applications/Eclipse\ Modeling.app/Contents/MacOS/eclipse -nosplash -data ~/touchcore-workspace/ -application org.eclipse.cdt.managedbuilder.core.headlessbuild -import $i &>/dev/null
 			  echo -n "."
 			done
@@ -549,7 +559,7 @@ echo "      Print this help message."
 echo "    -p | --pretend"
 echo "      Only show what would be done, without actually modifying anything."
 echo "    -r | --repair"
-echo "      Repair eclipse. Does not touch the plugins but resets all eclipse caches by resetting the workspace and .eclipse folder."
+echo "      Repair eclipse. Does not touch the plugins or code but resets all eclipse caches by resetting the workspace and .eclipse folder."
 echo "    -nqa | --noquestionsasked"
 echo "      Erase anything that might conflict a clean installation and reinstall, without any further user interactions."
 echo "    -c | --clean"
