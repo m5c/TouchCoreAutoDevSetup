@@ -469,10 +469,10 @@ function autoinstaller()
 	configurecs
 	configurelauncher
 	popupdismiss
-#	projectimport
+	projectimport
 }
 
-# deletese all eclipse artefacts that reside in user homedir
+# deletes all eclipse artefacts that reside in user homedir
 function deleteUserConfigs()
 {
 	echo " * Deleting all existing installation artifacts / configurations in homedir."
