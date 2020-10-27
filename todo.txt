@@ -1,5 +1,7 @@
  * Refuse to run installer if eclipse is still running 
- * Silence the brew installation
+ * On JDK update-clash, first manually uninstall, to prevent need for double script call
  * Add time estimator on installation start
  * Auto dismiss welcome message, so that projects are shown directly
+ * Auto dismiss donate page
  * Install (but don't configure) git plugin
+ * Install epsilon plugin required for perspectives

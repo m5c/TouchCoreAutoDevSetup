@@ -37,6 +37,20 @@ Furthermore, depending on your system and the required actions it may download a
 
 *Note:* The installer modifies configuration files within the eclipse installation. This leads to a signature mismatch of the app. Depending on your system settings you may be asked for your password to override the MacOS integrity protection.
 
+### Version Chart
+
+Below chart indicates the exact software versions pulled by the auto-installer:
+
+| Software | Version | Notes |
+|---|---|---|
+| Eclipse Modeling Version | 2020-09 | n/A |
+| Java | 11.0.5 | Eclipse not compatible with more recent versions. |
+| Acceleo | 3.7.10.202002210922 | n/A |
+| OCL | 6.12.0.v20200608-1555 | n/A |
+| Xtext | 2.23.0.v20200831-0926 | n/A |
+| Checkstyle | 8.29.0.202001290016 | n/A |
+| CDT | 10.0.0.202009071455 | n/A |
+
 ## Usage
 
 **Warning:** This tool may overwrite existing eclipse installations and configurations. It is highly recommended to make a full system backup before usage.
