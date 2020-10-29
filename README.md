@@ -50,6 +50,7 @@ Below chart indicates the exact software versions pulled by the auto-installer:
 | Xtext | 2.23.0.v20200831-0926 | n/A |
 | Checkstyle | 8.29.0.202001290016 | n/A |
 | CDT | 10.0.0.202009071455 | n/A |
+| Egit | 5.9.0.202009080501-r | n/A |
 
 ## Usage
 
@@ -58,8 +59,8 @@ Below chart indicates the exact software versions pulled by the auto-installer:
  * ```./touchcore-init -h``` *Print usage / synopsis.*
  * ```./touchcore-init -p``` *Run a full installation in pretend mode. Only show what would be done, without actually modifying the system.*
  * ```./touchcore-init``` *Run a full installation. Request user confirmation before modifying the system.*
- * ```./touchcore-init -c``` *Clean existing configurations / installation artifacts but do not touch the code. Request user confirmation before modifying the system.*
  * ```./touchcore-init -r``` *Repair eclipse. Does not hurt to run this from time to time. Does not touch code or plugins, but resets all caches / eclipse bloat files.*
+ * ```./touchcore-init -c``` *Clean existing configurations / installation artifacts but do not touch the code. Request user confirmation before modifying the system.*
 
 *Note:* The script was developed specifically for MacOS and will not work on other UNIX-like systems.
 

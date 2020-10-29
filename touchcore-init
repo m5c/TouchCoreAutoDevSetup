@@ -38,6 +38,11 @@ XTEXTVERSIONSUFFIX="-0926"
 # CDT => search for "c/c++ development tools" (non sdk)
 CDTVERSIONPREFIX="10.0.0."
 CDTVERSION=202009071455
+# EGIT
+# mylin is dependency of egit. search for "team" in main repo
+MYLYNVERSION="3.25.2.v20200828-1617"
+EGITREPO="http://download.eclipse.org/egit/updates"
+EGITVERSION="5.9.0.202009080501-r"
 BASEPATH=$(pwd)
 # Epsilon plugin -> Etea repo: "http://download.eclipse.org/epsilon/updates/2.2/" 
 # org.eclipse.epsilon.core.feature.feature.group - 1.1.0.202009032353
@@ -261,6 +266,24 @@ function eclipseplugins()
 	      /Applications/Eclipse\ Modeling.app/Contents/MacOS/eclipse -nosplash -application org.eclipse.equinox.p2.director -repository http://download.eclipse.org/releases/$ECLIPSEVERSION -installIU org.eclipse.cdt.feature.group/$CDTVERSIONPREFIX$CDTVERSION
 	    fi
     fi
+
+    # EGIT
+    if ls /Applications/Eclipse\ Modeling.app/Contents/Eclipse/plugins/org.eclipse.egitmylyn.ui_$EGITVERSION*.jar 1> /dev/null 2>&1; then
+	echo " * Skipping installation of EGIT Eclipse-Plugin"
+    else
+	    echo " * Installing EGIT Eclipse-Plugin and dependencies"
+	    if [ -z "$PRETEND" ] ; then
+		# Mylyn team support
+		/Applications/Eclipse\ Modeling.app/Contents/MacOS/eclipse -nosplash -application org.eclipse.equinox.p2.director -repository http://download.eclipse.org/releases/$ECLIPSEVERSION -installIU org.eclipse.mylyn.team_feature.feature.group/$MYLYNVERSION
+		# Egit core
+		/Applications/Eclipse\ Modeling.app/Contents/MacOS/eclipse -nosplash -application org.eclipse.equinox.p2.director -repository $EGITREPO -installIU org.eclipse.egit.source.feature.group/$EGITVERSION
+		# Egit features
+		/Applications/Eclipse\ Modeling.app/Contents/MacOS/eclipse -nosplash -application org.eclipse.equinox.p2.director -repository $EGITREPO -installIU org.eclipse.egit.gitflow.feature.feature.group/$EGITVERSION
+		# Egit team support
+		/Applications/Eclipse\ Modeling.app/Contents/MacOS/eclipse -nosplash -application org.eclipse.equinox.p2.director -repository $EGITREPO -installIU org.eclipse.egit.mylyn.feature.group/$EGITVERSION
+	    fi
+    fi
+
 
     ## Epsilon
 #    if ls /Applications/Eclipse\ Modeling.app/Contents/Eclipse/plugins/org.eclipse.cdt_$CDTVERSIONPREFIX*.jar 1> /dev/null 2>&1; then
