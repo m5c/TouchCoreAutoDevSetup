@@ -429,6 +429,11 @@ function projectimport()
 			  if [[ "$i" == *"$ca.mcgill.sel.usecasediagram.edit"* ]]; then
 			  	continue;
 			  fi
+			  # skip design perspective - is a phantom
+			  if [[ "$i" == *"$ca.mcgill.sel.core.perspective.design"* ]]; then
+			  	continue;
+			  fi
+
 			  /Applications/Eclipse\ Modeling.app/Contents/MacOS/eclipse -nosplash -data ~/touchcore-workspace/ -application org.eclipse.cdt.managedbuilder.core.headlessbuild -import $i &>/dev/null
 			  echo -n "."
 			done
