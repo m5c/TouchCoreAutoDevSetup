@@ -266,22 +266,23 @@ function eclipseplugins()
 	    fi
     fi
 
+## Seems like EGIT is not required any more
     # EGIT
-    if ls /Applications/Eclipse\ Modeling.app/Contents/Eclipse/plugins/org.eclipse.egitmylyn.ui_$EGITVERSION*.jar 1> /dev/null 2>&1; then
-	echo " * Skipping installation of EGIT Eclipse-Plugin"
-    else
-	    echo " * Installing EGIT Eclipse-Plugin and dependencies"
-	    if [ -z "$PRETEND" ] ; then
-		# Mylyn team support
-		/Applications/Eclipse\ Modeling.app/Contents/MacOS/eclipse -nosplash -application org.eclipse.equinox.p2.director -repository http://download.eclipse.org/releases/$ECLIPSEVERSION -installIU org.eclipse.mylyn.team_feature.feature.group/$MYLYNVERSION
-		# Egit core
-		/Applications/Eclipse\ Modeling.app/Contents/MacOS/eclipse -nosplash -application org.eclipse.equinox.p2.director -repository $EGITREPO -installIU org.eclipse.egit.source.feature.group/$EGITVERSION
-		# Egit features
-		/Applications/Eclipse\ Modeling.app/Contents/MacOS/eclipse -nosplash -application org.eclipse.equinox.p2.director -repository $EGITREPO -installIU org.eclipse.egit.gitflow.feature.feature.group/$EGITVERSION
-		# Egit team support
-		/Applications/Eclipse\ Modeling.app/Contents/MacOS/eclipse -nosplash -application org.eclipse.equinox.p2.director -repository $EGITREPO -installIU org.eclipse.egit.mylyn.feature.group/$EGITVERSION
-	    fi
-    fi
+#    if ls /Applications/Eclipse\ Modeling.app/Contents/Eclipse/plugins/org.eclipse.egitmylyn.ui_$EGITVERSION*.jar 1> /dev/null 2>&1; then
+#	echo " * Skipping installation of EGIT Eclipse-Plugin"
+#    else
+#	    echo " * Installing EGIT Eclipse-Plugin and dependencies"
+#	    if [ -z "$PRETEND" ] ; then
+#		# Mylyn team support
+#		/Applications/Eclipse\ Modeling.app/Contents/MacOS/eclipse -nosplash -application org.eclipse.equinox.p2.director -repository http://download.eclipse.org/releases/$ECLIPSEVERSION -installIU org.eclipse.mylyn.team_feature.feature.group/$MYLYNVERSION
+#		# Egit core
+#		/Applications/Eclipse\ Modeling.app/Contents/MacOS/eclipse -nosplash -application org.eclipse.equinox.p2.director -repository $EGITREPO -installIU org.eclipse.egit.source.feature.group/$EGITVERSION
+#		# Egit features
+#		/Applications/Eclipse\ Modeling.app/Contents/MacOS/eclipse -nosplash -application org.eclipse.equinox.p2.director -repository $EGITREPO -installIU org.eclipse.egit.gitflow.feature.feature.group/$EGITVERSION
+#		# Egit team support
+#		/Applications/Eclipse\ Modeling.app/Contents/MacOS/eclipse -nosplash -application org.eclipse.equinox.p2.director -repository $EGITREPO -installIU org.eclipse.egit.mylyn.feature.group/$EGITVERSION
+#	    fi
+#    fi
 
 
     ## Epsilon
