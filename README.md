@@ -51,6 +51,7 @@ Below chart indicates the exact software versions pulled by the auto-installer:
 | Checkstyle | 8.29.0.202001290016 | n/A |
 | CDT | 10.0.0.202009071455 | n/A |
 | Egit | 5.9.0.202009080501-r | n/A |
+| Epsilon | 2.2.0.202009032353 | n/A |
 
 ## Usage
 
