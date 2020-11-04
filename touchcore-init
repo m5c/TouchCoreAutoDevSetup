@@ -286,12 +286,19 @@ function eclipseplugins()
 
 
     ## Epsilon
-# Cross dependency of epsilon - not auto respoved since not in standard repo.
-/Applications/Eclipse\ Modeling.app/Contents/MacOS/eclipse -nosplash -application org.eclipse.equinox.p2.director -repository $ORBITREPO -installIU org.apache.commons.math3/$MATH3VERSION
-# Epsilon Core Dev
-/Applications/Eclipse\ Modeling.app/Contents/MacOS/eclipse -nosplash -application org.eclipse.equinox.p2.director -repository $EPSILONREPO -installIU org.eclipse.epsilon.core.dt.feature.feature.group/$EPSILONVERSIONPREFIX$EPSILONVERSION
-# EMF Integration
-/Applications/Eclipse\ Modeling.app/Contents/MacOS/eclipse -nosplash -application org.eclipse.equinox.p2.director -repository $EPSILONREPO -installIU org.eclipse.epsilon.emf.feature.feature.group/$EPSILONVERSIONPREFIX$EPSILONVERSION
+    if ls /Applications/Eclipse\ Modeling.app/Contents/Eclipse/plugins/org.eclipse.epsilon.emc.emf_$EPSILONVERSIONPREFIX$EPSILONVERSION.jar 1> /dev/null 2>&1; then
+	echo " * Skipping installation of Epsilon Eclipse-Plugin"
+    else
+	    echo " * Installing Epsilon Eclipse-Plugin and dependencies"
+	    if [ -z "$PRETEND" ] ; then
+		# Cross dependency of epsilon - not auto respoved since not in standard repo.
+		/Applications/Eclipse\ Modeling.app/Contents/MacOS/eclipse -nosplash -application org.eclipse.equinox.p2.director -repository $ORBITREPO -installIU org.apache.commons.math3/$MATH3VERSION
+		# Epsilon Core Dev
+		/Applications/Eclipse\ Modeling.app/Contents/MacOS/eclipse -nosplash -application org.eclipse.equinox.p2.director -repository $EPSILONREPO -installIU org.eclipse.epsilon.core.dt.feature.feature.group/$EPSILONVERSIONPREFIX$EPSILONVERSION
+		# EMF Integration
+		/Applications/Eclipse\ Modeling.app/Contents/MacOS/eclipse -nosplash -application org.eclipse.equinox.p2.director -repository $EPSILONREPO -installIU org.eclipse.epsilon.emf.feature.feature.group/$EPSILONVERSIONPREFIX$EPSILONVERSION
+	    fi
+    fi
 
 }
 
