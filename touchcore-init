@@ -22,7 +22,7 @@
 # NOTE: always use raw link INCLUDING commit-hash, to ensure a stable brew target: (11.0.9+11)
 # Eclipse 2020-09 is not compatible to 11.0.6  -> 11.0.5 os he most recent compatible.
 # DOWNLOAD cask form github raw (use specific commit to target specific version.) e.g. wget https://raw.githubusercontent.com/AdoptOpenJDK/homebrew-openjdk/582dff9b099894d042a7eb1e1418ed97ae59718e/Casks/adoptopenjdk11.rb
-JAVACASK=adoptopenjdk11.rb
+JAVARUBY=adoptopenjdk11.rb
 # Cask ruby file for homebrew
 ECLIPSEVERSION=2020-09
 # Exact target id of eclipe build, as stored in (cat /Applications/Eclipse\ Modeling.app/Contents/Info.plist | grep -A2 CFBundleVersion | grep string | cut -c 13-33)
@@ -507,9 +507,9 @@ function autoinstaller()
 	checkoutcode
 	eclipseinstall
 	eclipseplugins
-	eclipsecs
+#	eclipsecs
 	eclipseconfig
-	configurecs
+#	configurecs
 	configurelauncher
 	popupdismiss
 	projectimport
