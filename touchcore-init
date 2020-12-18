@@ -467,6 +467,7 @@ function projectimport()
 			done
 			echo ""
 		fi
+		echo "[Project import complete. To link git upstream, select all modules - rightclick -> team -> share]"
 	else
 		echo " * Skipping import of projects into workspace"
 	fi
@@ -507,9 +508,15 @@ function autoinstaller()
 	checkoutcode
 	eclipseinstall
 	eclipseplugins
-#	eclipsecs
+
+	# install eclipse checkstyle plugin
+	eclipsecs
+
+	# configure general eclipse settings
 	eclipseconfig
-#	configurecs
+	
+	# configure eclipse checkstyle plugin
+	configurecs
 	configurelauncher
 	popupdismiss
 	projectimport
