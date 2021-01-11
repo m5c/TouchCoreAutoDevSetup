@@ -129,7 +129,7 @@ function javainstall
 		echo " * Installing Java 11.0.5"
 		if [ -z "$PRETEND" ] ; then
 			cd $BASEPATH
-			brew cask install $JAVACASK
+			brew install --cask $JAVACASK
 			cd -
 		fi
 	else
@@ -138,8 +138,8 @@ function javainstall
 		if [ ! "$INSTALLED_VERSION" = "11.0.5" ]; then
 			echo " * Replacing existing java 11 installation with compatible version 11.0.5"
 			if [ -z "$PRETEND" ] ; then
-			    brew cask uninstall adoptopenjdk11
-			    brew cask install $JAVARUBY
+			    brew uninstall --cask adoptopenjdk11
+			    brew install --cask $JAVARUBY
 			fi
 		else
 			echo " * Skipping installation/update of Java 11.0.5"
@@ -191,13 +191,13 @@ function eclipseinstall
 		echo " * Installing Eclipse Modeling version to /Applications/Eclipse Modeling.app/"
 		if [ -z "$PRETEND" ] ; then
 		    # check if existing version was installed by brew
-		    brew cask info eclipse-modeling &> /dev/null
+		    brew info --cask eclipse-modeling &> /dev/null
 		    if [ $? -eq 0 ] ; then
-    		      brew cask uninstall eclipse-modeling &> /dev/null
+    		      brew uninstall --cask eclipse-modeling &> /dev/null
 		    else
  		      rm -rf /Applications/Eclipse-Modeling.app/
                     fi
-		    brew cask install ./eclipse-modeling.rb
+		    brew install --cask ./eclipse-modeling.rb
 		fi
 	else
 		
@@ -207,13 +207,13 @@ function eclipseinstall
 		  echo " * Replacing installed eclipse by $ECLIPSEVERSION"
 		  if [ -z "$PRETEND" ] ; then
 		    # check if existing version was installed by brew
-		    brew cask info eclipse-modeling > /dev/null
+		    brew info --cask eclipse-modeling > /dev/null
 		    BREWINSTALLED=$?
 		    if [ $BREWINSTALLED -eq 0 ] ; then
     		      brew reinstall ./eclipse-modeling.rb
 		    else
  		      rm -rf /Applications/Eclipse-Modeling.app/
-		      brew cask install ./eclipse-modeling.rb
+		      brew install --cask ./eclipse-modeling.rb
                     fi
 		  fi
 		else
