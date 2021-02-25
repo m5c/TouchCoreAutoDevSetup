@@ -423,8 +423,13 @@ function projectimport()
 	if [ ! -f ~/touchcore-workspace/.metadata/.plugins/org.eclipse.core.resources/.projects/ca.mcgill.sel.ram.gui/.location ]; then
 		echo " * Importing projects into workspace"
 		if [ -z "$PRETEND" ] ; then
+			## CORE projects
 			for i in ~/Code/core/ca.mcgill*
 			  do 
+			  # skip the perspective design project - it is a phantom
+			  if [[ "$i" == *"$ca.mcgill.sel.core.perspective.design"* ]]; then
+				continue;
+			  fi
 			  # skip the gui project - it is a phantom
 			  if [[ "$i" == *"$ca.mcgill.sel.core.gui"* ]]; then
 				continue;
@@ -433,12 +438,21 @@ function projectimport()
 			  if [[ "$i" == *"$ca.mcgill.sel.core.perspective.dsl"* ]]; then
 				continue;
 			  fi
+			  # skip all editors
+			  if [[ "$i" == *"editor"* ]]; then
+				continue;
+			  fi
 			  # TODO: skip import if already imported
 			  /Applications/Eclipse\ Modeling.app/Contents/MacOS/eclipse -nosplash -data ~/touchcore-workspace/ -application org.eclipse.cdt.managedbuilder.core.headlessbuild -import $i &>/dev/null
 			  echo -n "."
 			done
+			## RAM projects
 			for i in ~/Code/touchram/ca.mcgill*
 			  do 
+			  # skip all editors
+			  if [[ "$i" == *"editor"* ]]; then
+				continue;
+			  fi
 			  # skip the pcm projects (currently not building)
 			  if [[ "$i" == *"$ca.mcgill.sel.pcm"* ]]; then
 				continue;
