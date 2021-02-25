@@ -439,6 +439,10 @@ function projectimport()
 			done
 			for i in ~/Code/touchram/ca.mcgill*
 			  do 
+			  # skip the pcm projects (currently not building)
+			  if [[ "$i" == *"$ca.mcgill.sel.pcm"* ]]; then
+				continue;
+			  fi
 			  # skip the ucm projects (currently not building)
 			  if [[ "$i" == *"$ca.mcgill.sel.ucm"* ]]; then
 				continue;
