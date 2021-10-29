@@ -8,7 +8,7 @@
 # print disclaimer
 # OS check
 # brew installation
-# jdk-11 installation (v 1.8.232)
+# jdk-11 installation / jdk-8  installation (v 1.8.232)
 # eclipse installation
 # code checkout
 # eclipse plugin installation
@@ -22,7 +22,8 @@
 # NOTE: always use raw link INCLUDING commit-hash, to ensure a stable brew target: (11.0.9+11)
 # Eclipse 2020-09 is not compatible to 11.0.6  -> 11.0.5 os he most recent compatible.
 # DOWNLOAD cask form github raw (use specific commit to target specific version.) e.g. wget https://raw.githubusercontent.com/AdoptOpenJDK/homebrew-openjdk/582dff9b099894d042a7eb1e1418ed97ae59718e/Casks/adoptopenjdk11.rb
-JAVARUBY=adoptopenjdk11.rb
+JAVARUBY11=adoptopenjdk11.rb
+JAVARUBY8=adoptopenjdk8.rb
 # Cask ruby file for homebrew
 ECLIPSEVERSION=2020-09
 # Exact target id of eclipe build, as stored in (cat /Applications/Eclipse\ Modeling.app/Contents/Info.plist | grep -A2 CFBundleVersion | grep string | cut -c 13-33)
@@ -122,14 +123,14 @@ function wgetinstall
 	fi
 }
 
-function javainstall
+function javainstall11
 {
 	# check if required version of java 11 ispresent	
 	if [ ! -d /Library/Java/JavaVirtualMachines/adoptopenjdk-11.jdk/ ]; then
 		echo " * Installing Java 11.0.5"
 		if [ -z "$PRETEND" ] ; then
 			cd $BASEPATH
-			brew install --cask $JAVACASK
+			brew install --cask $JAVARUBY11
 			cd -
 		fi
 	else
@@ -139,10 +140,35 @@ function javainstall
 			echo " * Replacing existing java 11 installation with compatible version 11.0.5"
 			if [ -z "$PRETEND" ] ; then
 			    brew uninstall --cask adoptopenjdk11
-			    brew install --cask $JAVARUBY
+			    brew install --cask $JAVARUBY11
 			fi
 		else
 			echo " * Skipping installation/update of Java 11.0.5"
+		fi
+	fi
+}
+
+function javainstall8
+{
+	# check if required version of java 11 ispresent	
+	if [ ! -d /Library/Java/JavaVirtualMachines/adoptopenjdk-8.jdk/ ]; then
+		echo " * Installing Java 1.8.0_232-b09"
+		if [ -z "$PRETEND" ] ; then
+			cd $BASEPATH
+			brew install --cask $JAVARUBY8
+			cd -
+		fi
+	else
+		# check if the preinstalled java version is the right one
+		INSTALLED_VERSION=$(cat /Library/Java/JavaVirtualMachines/adoptopenjdk-8.jdk/Contents/Info.plist | grep "AdoptOpenJDK 1.8" | head -n 1 | cut -c 23-31)
+		if [ ! "$INSTALLED_VERSION" = "1.8.0_232" ]; then
+			echo " * Replacing existing java 8 installation with compatible version 1.8.0_232"
+			if [ -z "$PRETEND" ] ; then
+			    brew uninstall --cask adoptopenjdk8
+			    brew install --cask $JAVARUBY8
+			fi
+		else
+			echo " * Skipping installation/update of Java 1.8.0_232"
 		fi
 	fi
 }
@@ -522,7 +548,8 @@ function popupdismiss()
 function autoinstaller()
 {
 	brewinstall
-	javainstall
+	javainstall8
+#	javainstall11
 	checkoutcode
 	eclipseinstall
 	eclipseplugins
