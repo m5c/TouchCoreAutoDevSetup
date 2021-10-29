@@ -391,12 +391,19 @@ org.eclipse.jdt.launching.PREF_VM_XML=<?xml version\="1.0" encoding\="UTF-8" sta
 #      echo "CURRENT_THEME_ID=org.eclipse.ui.r30" >> ~/touchcore-workspace/.metadata/.plugins/org.eclipse.core.runtime/.settings/org.eclipse.ui.prefs
     fi
 
+    # override default indent policy (configure to replace tabs by 4 whitespaces)
+    echo " * Configuring 4-whitespace as custom indent policy on auto-format"
+    if [ -z "$PRETEND" ] ; then
+      cp org.eclipse.jdt.ui.prefs ~/touchcore-workspace/.metadata/.plugins/org.eclipse.core.runtime/.settings/org.eclipse.jdt.ui.prefs
+    fi
+
     # disable anoying popups
     echo " * Configuring Eclipse to respect my will and stop asking redundant questions"
     if [ -z "$PRETEND" ] ; then
       echo "EXIT_PROMPT_ON_CLOSE_LAST_WINDOW=false" >> ~/touchcore-workspace/.metadata/.plugins/org.eclipse.core.runtime/.settings/org.eclipse.ui.ide.prefs
     fi
 }
+
 # checkstyle is a marketplace app and as such not directly isntallable via the eclipse installer. But there it is possible to just download the extension's files and extract them at the reight place, into the existing ecplise installation
 # https://github.com/budhash/install-eclipse
 function eclipsecs()
