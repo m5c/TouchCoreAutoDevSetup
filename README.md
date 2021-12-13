@@ -73,6 +73,11 @@ The auto installer places files at specific locations. It will only search and d
  * *Sources* at ```~/Code/core/``` and ```~/Code/touchram/```
  * *Eclipse workspace* at ```~/touchcore-workspace/```
 
+## MISC
+
+ * ```brew update``` breaks the setup. If you ran a brew update, you have to manually downgrade to JDK 11.0.5 afterwards. The ```-r``` (repair) switch is your friend.
+ * Checkstyle zip location has been removed. Currently not possible to auto0install checkstyle plugin.
+
 ## Author / Pull requests
 
 Maximilian Schiedermeier  
