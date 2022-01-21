@@ -404,8 +404,7 @@ org.eclipse.jdt.launching.PREF_VM_XML=<?xml version\="1.0" encoding\="UTF-8" sta
     fi
 }
 
-# checkstyle is a marketplace app and as such not directly isntallable via the eclipse installer. But there it is possible to just download the extension's files and extract them at the reight place, into the existing ecplise installation
-# https://github.com/budhash/install-eclipse
+# checkstyle is a marketplace app and as such not directly isntallable via the eclipse installer. But there it is possible to just download the extension's files and extract them at the right place, into the existing ecplise installation
 function eclipsecs()
 {	
 	# TODO: Uninstall different versions.
@@ -417,7 +416,8 @@ function eclipsecs()
 			wgetinstall
 
 			# get the checkstyle plugin, v 8.29.0.202001290016
-			wget -q --show-progress --progress=bar:force -O /tmp/checkstyle.zip https://bintray.com/eclipse-cs/eclipse-cs/download_file?file_path=update-site-archive%2Fnet.sf.eclipsecs-updatesite_8.29.0.202001290016.zip 2>&1
+                        # if you need to update the link, see logfile instructions for checkstyle build (maven)
+			wget -q --show-progress --progress=bar:force -O /tmp/checkstyle.zip https://www.cs.mcgill.ca/~mschie3/auto-install-res/checkstyle.zip
 			unzip -qq -o /tmp/checkstyle.zip -d /tmp
 
 			# transplant plugin files into Eclipse installation
