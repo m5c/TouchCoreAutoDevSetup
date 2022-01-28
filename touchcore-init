@@ -404,11 +404,11 @@ org.eclipse.jdt.launching.PREF_VM_XML=<?xml version\="1.0" encoding\="UTF-8" sta
     fi
 }
 
-# checkstyle is a marketplace app and as such not directly isntallable via the eclipse installer. But there it is possible to just download the extension's files and extract them at the right place, into the existing ecplise installation
+# checkstyle is a marketplace app and as such not directly installable via the eclipse installer. But there it is possible to just download the extension's files and extract them at the right place, into the existing ecplise installation
 function eclipsecs()
 {	
 	# TODO: Uninstall different versions.
-	if [ ! -f /Applications/Eclipse\ Modeling.app/Contents/Eclipse/plugins/net.sf.eclipsecs.checkstyle_8.29.0.202001290016.jar ]; then
+	if [ ! -f /Applications/Eclipse\ Modeling.app/Contents/Eclipse/plugins/net.sf.eclipsecs.checkstyle_9.1.0.202201281540.jar ]; then
 		echo " * Installing Checkstyle plugin"
 		
 		if [ -z "$PRETEND" ] ; then
@@ -486,6 +486,11 @@ function projectimport()
 			  if [[ "$i" == *"editor"* ]]; then
 				continue;
 			  fi
+
+			  # skip the ram languages (legacy)
+                          if [[ "$i" == *"$ca.mcgill.sel.ram.languages"* ]]; then
+                                continue;
+                          fi
 			  # skip the pcm projects (currently not building)
 			  if [[ "$i" == *"$ca.mcgill.sel.pcm"* ]]; then
 				continue;
