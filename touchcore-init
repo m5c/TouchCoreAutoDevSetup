@@ -90,7 +90,7 @@ function admincheck
 # manipulation of installed apps requires spctl to be disabled. This is required to manipulate default settings in the eclipse application, after it has been installed.
 function spctlcheck
 {
-   INTEGRITYCHECKS=$(sudo spctl --status)
+   INTEGRITYCHECKS=$(spctl --status)
    if [ "$INTEGRITYCHECKS" = "assessments enabled" ]; then 
 	echo " *** WARNING: Your system is currenlty integrity protected, but eclipse auto-configuration modifies the app-signature. You may be asked for your password, to accept the modification. ***"
 	sudo spctl --master-disable
