@@ -2,7 +2,7 @@
 
 # Touch/Ram/Core setup script.
 # @author max.schiedermeier@mcgill.ca
-# 
+#
 # steps (installations are skiped if required software already found on system)
 #
 # print disclaimer
@@ -45,7 +45,7 @@ MYLYNVERSION="3.25.2.v20200828-1617"
 EGITREPO="http://download.eclipse.org/egit/updates"
 EGITVERSION="5.9.0.202009080501-r"
 BASEPATH=$(pwd)
-# Epsilon plugin -> Etea repo: "http://download.eclipse.org/epsilon/updates/2.2/" 
+# Epsilon plugin -> Etea repo: "http://download.eclipse.org/epsilon/updates/2.2/"
 # org.eclipse.epsilon.core.feature.feature.group - 1.1.0.202009032353
 # org.eclipse.epsilon.emf.feature.feature.group - 1.1.0.202009032353
 # implictly requires: org.apache.commons.math3 0.0.0 (osgi bundle) => Is from "orbit" repo. Repo URL in repo selector. Plugin verison if in "installed plugins"
