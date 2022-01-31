@@ -56,7 +56,7 @@ EPSILONVERSIONPREFIX="2.2.0."
 EPSILONVERSION=202009032353
 
 
-function disclaimer()
+function disclaimer
 {
 	echo "Welcome to the TouchCore setup script."
 	echo "Running this script will alter your system. MAKE A BACKUP NOW!"
