@@ -223,7 +223,7 @@ function eclipseinstall
 		    else
  		      rm -rf /Applications/Eclipse-Modeling.app/
                     fi
-		    brew install --cask ./eclipse-modeling.rb
+		    brew install --cask eclipse-modeling.rb
 		fi
 	else
 		
@@ -236,10 +236,10 @@ function eclipseinstall
 		    brew info --cask eclipse-modeling > /dev/null
 		    BREWINSTALLED=$?
 		    if [ $BREWINSTALLED -eq 0 ] ; then
-    		      brew reinstall ./eclipse-modeling.rb
+    		      brew reinstall eclipse-modeling.rb
 		    else
  		      rm -rf /Applications/Eclipse-Modeling.app/
-		      brew install --cask ./eclipse-modeling.rb
+		      brew install --cask eclipse-modeling.rb
                     fi
 		  fi
 		else
@@ -459,6 +459,14 @@ function projectimport()
 			## CORE projects
 			for i in ~/Code/core/ca.mcgill*
 			  do 
+                          # skip the core test package - is outdated and leads to compile errors
+			  if [[ "$i" == *"$ca.mcgill.sel.core.tests"* ]]; then
+				continue;
+			  fi
+                          # skip the core weaver package - is a phantom
+			  if [[ "$i" == *"$ca.mcgill.sel.core.weaver"* ]]; then
+				continue;
+			  fi
 			  # skip the perspective design project - it is a phantom
 			  if [[ "$i" == *"$ca.mcgill.sel.core.perspective.design"* ]]; then
 				continue;
