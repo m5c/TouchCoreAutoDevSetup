@@ -26,7 +26,7 @@ JAVARUBY11=adoptopenjdk11.rb
 JAVARUBY8=adoptopenjdk8.rb
 # Cask ruby file for homebrew
 ECLIPSEVERSION=2020-09
-# Exact target id of eclipe build, as stored in (cat /Applications/Eclipse\ Modeling.app/Contents/Info.plist | grep -A2 CFBundleVersion | grep string | cut -c 13-33)
+# Exact target id of eclipe build, as stored in (cat /Applications/Eclipse.app/Contents/Info.plist | grep -A2 CFBundleVersion | grep string | cut -c 13-33)
 ECLIPSE_TARGET_ID=4.17.0.I20200902-1800
 # Eclipse plugin version numbers
 ACCELEOVERSION=3.7.10.202002210922
@@ -135,7 +135,7 @@ function javainstall11
 		fi
 	else
 		# check if the preinstalled java version is the right one
-		INSTALLED_VERSION=$(cat /Library/Java/JavaVirtualMachines/adoptopenjdk-11.jdk/Contents/Info.plist | grep "AdoptOpenJDK 11" | head -n 1 | cut -c 23-28)
+		INSTALLED_VERSION=$(cat /Library/Java/JavaVirtualMachines/jdk-11.0.5.jdk/Contents/Info.plist | grep "JVMVersion" | head -n 1 | cut -c 23-28)
 		if [ ! "$INSTALLED_VERSION" = "11.0.5" ]; then
 			echo " * Replacing existing java 11 installation with compatible version 11.0.5"
 			if [ -z "$PRETEND" ] ; then
@@ -213,8 +213,8 @@ function eclipseinstall
 {
 	# check if the modeling verison of eclipse is installed
 	cd $BASEPATH
-	if [ ! -d /Applications/Eclipse\ Modeling.app/ ]; then
-		echo " * Installing Eclipse Modeling version to /Applications/Eclipse Modeling.app/"
+	if [ ! -d /Applications/Eclipse.app/ ]; then
+		echo " * Installing Eclipse Modeling version to /Applications/Eclipse.app/"
 		if [ -z "$PRETEND" ] ; then
 		    # check if existing version was installed by brew
 		    brew info --cask eclipse-modeling &> /dev/null
@@ -228,7 +228,7 @@ function eclipseinstall
 	else
 		
 		# check if the installed version is the right one
-		INSTALLEDECLIPSE=$(cat /Applications/Eclipse\ Modeling.app/Contents/Info.plist | grep -A2 CFBundleVersion | grep string | cut -c 13-33)
+		INSTALLEDECLIPSE=$(cat /Applications/Eclipse.app/Contents/Info.plist | grep -A2 CFBundleVersion | grep string | cut -c 13-33)
 		if [ ! "$INSTALLEDECLIPSE" = "$ECLIPSE_TARGET_ID" ]; then
 		  echo " * Replacing installed eclipse by $ECLIPSEVERSION"
 		  if [ -z "$PRETEND" ] ; then
@@ -253,76 +253,76 @@ function eclipseinstall
 function eclipseplugins()
 {
     # acceleo
-    if ls /Applications/Eclipse\ Modeling.app/Contents/Eclipse/plugins/org.eclipse.acceleo.common_$ACCELEOVERSION.jar 1> /dev/null 2>&1; then
+    if ls /Applications/Eclipse.app/Contents/Eclipse/plugins/org.eclipse.acceleo.common_$ACCELEOVERSION.jar 1> /dev/null 2>&1; then
 	echo " * Skipping installation of Acceleo Eclipse-Plugin"
     else
 	    echo " * Installing Acceleo Eclipse-Plugin"
 	    if [ -z "$PRETEND" ] ; then
-	      /Applications/Eclipse\ Modeling.app/Contents/MacOS/eclipse -nosplash -application org.eclipse.equinox.p2.director -repository http://download.eclipse.org/releases/$ECLIPSEVERSION -installIU org.eclipse.acceleo.feature.group/$ACCELEOVERSION
+	      /Applications/Eclipse.app/Contents/MacOS/eclipse -nosplash -application org.eclipse.equinox.p2.director -repository http://download.eclipse.org/releases/$ECLIPSEVERSION -installIU org.eclipse.acceleo.feature.group/$ACCELEOVERSION
 	    fi
     fi
 
     # OCL
-    if ls /Applications/Eclipse\ Modeling.app/Contents/Eclipse/plugins/org.eclipse.ocl.examples_*$OCLVERSION*.jar 1> /dev/null 2>&1; then
+    if ls /Applications/Eclipse.app/Contents/Eclipse/plugins/org.eclipse.ocl.examples_*$OCLVERSION*.jar 1> /dev/null 2>&1; then
 	echo " * Skipping installation of OCL Eclipse-Plugin"
     else
 	    echo " * Installing OCL Eclipse-Plugin"
 	    if [ -z "$PRETEND" ] ; then
-	      /Applications/Eclipse\ Modeling.app/Contents/MacOS/eclipse -nosplash -application org.eclipse.equinox.p2.director -repository http://download.eclipse.org/releases/$ECLIPSEVERSION -installIU org.eclipse.ocl.examples.feature.group/$OCLVERSIONPREFIX$OCLVERSION
+	      /Applications/Eclipse.app/Contents/MacOS/eclipse -nosplash -application org.eclipse.equinox.p2.director -repository http://download.eclipse.org/releases/$ECLIPSEVERSION -installIU org.eclipse.ocl.examples.feature.group/$OCLVERSIONPREFIX$OCLVERSION
 	    fi
     fi
 
     # xtext
-    if ls /Applications/Eclipse\ Modeling.app/Contents/Eclipse/plugins/org.eclipse.xtext.doc_$XTEXTVERSION*.jar 1> /dev/null 2>&1; then
+    if ls /Applications/Eclipse.app/Contents/Eclipse/plugins/org.eclipse.xtext.doc_$XTEXTVERSION*.jar 1> /dev/null 2>&1; then
 	echo " * Skipping installation of Xtext Eclipse-Plugin"
     else
 	    echo " * Installing Xtext Eclipse-Plugin"
 	    if [ -z "$PRETEND" ] ; then
-      /Applications/Eclipse\ Modeling.app/Contents/MacOS/eclipse -nosplash -application org.eclipse.equinox.p2.director -repository http://download.eclipse.org/releases/$ECLIPSEVERSION -installIU org.eclipse.xtext.sdk.feature.group/$XTEXTVERSION$XTEXTVERSIONSUFFIX
+      /Applications/Eclipse.app/Contents/MacOS/eclipse -nosplash -application org.eclipse.equinox.p2.director -repository http://download.eclipse.org/releases/$ECLIPSEVERSION -installIU org.eclipse.xtext.sdk.feature.group/$XTEXTVERSION$XTEXTVERSIONSUFFIX
 	    fi
     fi
 
     # CDT 
-    if ls /Applications/Eclipse\ Modeling.app/Contents/Eclipse/plugins/org.eclipse.cdt_$CDTVERSIONPREFIX*.jar 1> /dev/null 2>&1; then
+    if ls /Applications/Eclipse.app/Contents/Eclipse/plugins/org.eclipse.cdt_$CDTVERSIONPREFIX*.jar 1> /dev/null 2>&1; then
 	echo " * Skipping installation of CDT Eclipse-Plugin"
     else
 	    echo " * Installing CDT Eclipse-Plugin"
 	    if [ -z "$PRETEND" ] ; then
-	      /Applications/Eclipse\ Modeling.app/Contents/MacOS/eclipse -nosplash -application org.eclipse.equinox.p2.director -repository http://download.eclipse.org/releases/$ECLIPSEVERSION -installIU org.eclipse.cdt.feature.group/$CDTVERSIONPREFIX$CDTVERSION
+	      /Applications/Eclipse.app/Contents/MacOS/eclipse -nosplash -application org.eclipse.equinox.p2.director -repository http://download.eclipse.org/releases/$ECLIPSEVERSION -installIU org.eclipse.cdt.feature.group/$CDTVERSIONPREFIX$CDTVERSION
 	    fi
     fi
 
 ## Seems like EGIT is not required any more
     # EGIT
-#    if ls /Applications/Eclipse\ Modeling.app/Contents/Eclipse/plugins/org.eclipse.egitmylyn.ui_$EGITVERSION*.jar 1> /dev/null 2>&1; then
+#    if ls /Applications/Eclipse.app/Contents/Eclipse/plugins/org.eclipse.egitmylyn.ui_$EGITVERSION*.jar 1> /dev/null 2>&1; then
 #	echo " * Skipping installation of EGIT Eclipse-Plugin"
 #    else
 #	    echo " * Installing EGIT Eclipse-Plugin and dependencies"
 #	    if [ -z "$PRETEND" ] ; then
 #		# Mylyn team support
-#		/Applications/Eclipse\ Modeling.app/Contents/MacOS/eclipse -nosplash -application org.eclipse.equinox.p2.director -repository http://download.eclipse.org/releases/$ECLIPSEVERSION -installIU org.eclipse.mylyn.team_feature.feature.group/$MYLYNVERSION
+#		/Applications/Eclipse.app/Contents/MacOS/eclipse -nosplash -application org.eclipse.equinox.p2.director -repository http://download.eclipse.org/releases/$ECLIPSEVERSION -installIU org.eclipse.mylyn.team_feature.feature.group/$MYLYNVERSION
 #		# Egit core
-#		/Applications/Eclipse\ Modeling.app/Contents/MacOS/eclipse -nosplash -application org.eclipse.equinox.p2.director -repository $EGITREPO -installIU org.eclipse.egit.source.feature.group/$EGITVERSION
+#		/Applications/Eclipse.app/Contents/MacOS/eclipse -nosplash -application org.eclipse.equinox.p2.director -repository $EGITREPO -installIU org.eclipse.egit.source.feature.group/$EGITVERSION
 #		# Egit features
-#		/Applications/Eclipse\ Modeling.app/Contents/MacOS/eclipse -nosplash -application org.eclipse.equinox.p2.director -repository $EGITREPO -installIU org.eclipse.egit.gitflow.feature.feature.group/$EGITVERSION
+#		/Applications/Eclipse.app/Contents/MacOS/eclipse -nosplash -application org.eclipse.equinox.p2.director -repository $EGITREPO -installIU org.eclipse.egit.gitflow.feature.feature.group/$EGITVERSION
 #		# Egit team support
-#		/Applications/Eclipse\ Modeling.app/Contents/MacOS/eclipse -nosplash -application org.eclipse.equinox.p2.director -repository $EGITREPO -installIU org.eclipse.egit.mylyn.feature.group/$EGITVERSION
+#		/Applications/Eclipse.app/Contents/MacOS/eclipse -nosplash -application org.eclipse.equinox.p2.director -repository $EGITREPO -installIU org.eclipse.egit.mylyn.feature.group/$EGITVERSION
 #	    fi
 #    fi
 
 
     ## Epsilon
-    if ls /Applications/Eclipse\ Modeling.app/Contents/Eclipse/plugins/org.eclipse.epsilon.emc.emf_$EPSILONVERSIONPREFIX$EPSILONVERSION.jar 1> /dev/null 2>&1; then
+    if ls /Applications/Eclipse.app/Contents/Eclipse/plugins/org.eclipse.epsilon.emc.emf_$EPSILONVERSIONPREFIX$EPSILONVERSION.jar 1> /dev/null 2>&1; then
 	echo " * Skipping installation of Epsilon Eclipse-Plugin"
     else
 	    echo " * Installing Epsilon Eclipse-Plugin and dependencies"
 	    if [ -z "$PRETEND" ] ; then
 		# Cross dependency of epsilon - not auto respoved since not in standard repo.
-		/Applications/Eclipse\ Modeling.app/Contents/MacOS/eclipse -nosplash -application org.eclipse.equinox.p2.director -repository $ORBITREPO -installIU org.apache.commons.math3/$MATH3VERSION
+		/Applications/Eclipse.app/Contents/MacOS/eclipse -nosplash -application org.eclipse.equinox.p2.director -repository $ORBITREPO -installIU org.apache.commons.math3/$MATH3VERSION
 		# Epsilon Core Dev
-		/Applications/Eclipse\ Modeling.app/Contents/MacOS/eclipse -nosplash -application org.eclipse.equinox.p2.director -repository $EPSILONREPO -installIU org.eclipse.epsilon.core.dt.feature.feature.group/$EPSILONVERSIONPREFIX$EPSILONVERSION
+		/Applications/Eclipse.app/Contents/MacOS/eclipse -nosplash -application org.eclipse.equinox.p2.director -repository $EPSILONREPO -installIU org.eclipse.epsilon.core.dt.feature.feature.group/$EPSILONVERSIONPREFIX$EPSILONVERSION
 		# EMF Integration
-		/Applications/Eclipse\ Modeling.app/Contents/MacOS/eclipse -nosplash -application org.eclipse.equinox.p2.director -repository $EPSILONREPO -installIU org.eclipse.epsilon.emf.feature.feature.group/$EPSILONVERSIONPREFIX$EPSILONVERSION
+		/Applications/Eclipse.app/Contents/MacOS/eclipse -nosplash -application org.eclipse.equinox.p2.director -repository $EPSILONREPO -installIU org.eclipse.epsilon.emf.feature.feature.group/$EPSILONVERSIONPREFIX$EPSILONVERSION
 	    fi
     fi
 
@@ -346,16 +346,16 @@ function eclipseconfig()
     fi
 
     # make sure dedicated workspace is selected by default
-    if [ ! -f /Applications/Eclipse\ Modeling.app/Contents/Eclipse/configuration/.settings/org.eclipse.ui.ide.prefs ] ; then
+    if [ ! -f /Applications/Eclipse.app/Contents/Eclipse/configuration/.settings/org.eclipse.ui.ide.prefs ] ; then
       echo " * Setting correct default workspace"
       if [ -z "$PRETEND" ] ; then
-        mkdir -p /Applications/Eclipse\ Modeling.app/Contents/Eclipse/configuration/.settings
+        mkdir -p /Applications/Eclipse.app/Contents/Eclipse/configuration/.settings
 	echo "MAX_RECENT_WORKSPACES=10
 RECENT_WORKSPACES=/Users/$(whoami)/touchcore-workspace
 RECENT_WORKSPACES_PROTOCOL=3
 SHOW_RECENT_WORKSPACES=false
 SHOW_WORKSPACE_SELECTION_DIALOG=false
-eclipse.preferences.version=1" > /Applications/Eclipse\ Modeling.app/Contents/Eclipse/configuration/.settings/org.eclipse.ui.ide.prefs
+eclipse.preferences.version=1" > /Applications/Eclipse.app/Contents/Eclipse/configuration/.settings/org.eclipse.ui.ide.prefs
       fi
     else
       echo " * Skipping setting dedicated workspace as default"
@@ -408,7 +408,7 @@ org.eclipse.jdt.launching.PREF_VM_XML=<?xml version\="1.0" encoding\="UTF-8" sta
 function eclipsecs()
 {	
 	# TODO: Uninstall different versions.
-	if [ ! -f /Applications/Eclipse\ Modeling.app/Contents/Eclipse/plugins/net.sf.eclipsecs.checkstyle_9.1.0.202201281540.jar ]; then
+	if [ ! -f /Applications/Eclipse.app/Contents/Eclipse/plugins/net.sf.eclipsecs.checkstyle_9.1.0.202201281540.jar ]; then
 		echo " * Installing Checkstyle plugin"
 		
 		if [ -z "$PRETEND" ] ; then
@@ -421,8 +421,8 @@ function eclipsecs()
 			unzip -qq -o /tmp/checkstyle.zip -d /tmp
 
 			# transplant plugin files into Eclipse installation
-			cp /tmp/features/* /Applications/Eclipse\ Modeling.app/Contents/Eclipse/features/
-			cp /tmp/plugins/* /Applications/Eclipse\ Modeling.app/Contents/Eclipse/plugins/
+			cp /tmp/features/* /Applications/Eclipse.app/Contents/Eclipse/features/
+			cp /tmp/plugins/* /Applications/Eclipse.app/Contents/Eclipse/plugins/
 		fi
 	else
 		echo " * Skipping installation of Checkstyle-Plugin"
@@ -437,7 +437,6 @@ function configurecs()
 		if [ -z "$PRETEND" ] ; then
 			mkdir -p ~/touchcore-workspace/.metadata/.plugins/net.sf.eclipsecs.core/
 			echo '<?xml version="1.0" encoding="UTF-8"?>
-
 		<checkstyle-configurations file-format-version="5.0.0" default-check-configuration="TouchRAM Checks">
 		  <check-configuration name="TouchRAM Checks" location="/ca.mcgill.sel.commons/touchram_checkstyle.xml" type="project" description="">
 		    <additional-data name="protect-config-file" value="false"/>
@@ -484,7 +483,7 @@ function projectimport()
 				continue;
 			  fi
 			  # TODO: skip import if already imported
-			  /Applications/Eclipse\ Modeling.app/Contents/MacOS/eclipse -nosplash -data ~/touchcore-workspace/ -application org.eclipse.cdt.managedbuilder.core.headlessbuild -import $i &>/dev/null
+			  /Applications/Eclipse.app/Contents/MacOS/eclipse -nosplash -data ~/touchcore-workspace/ -application org.eclipse.cdt.managedbuilder.core.headlessbuild -import $i &>/dev/null
 			  echo -n "."
 			done
 			## RAM projects
@@ -526,7 +525,7 @@ function projectimport()
 			  	continue;
 			  fi
 
-			  /Applications/Eclipse\ Modeling.app/Contents/MacOS/eclipse -nosplash -data ~/touchcore-workspace/ -application org.eclipse.cdt.managedbuilder.core.headlessbuild -import $i &>/dev/null
+			  /Applications/Eclipse.app/Contents/MacOS/eclipse -nosplash -data ~/touchcore-workspace/ -application org.eclipse.cdt.managedbuilder.core.headlessbuild -import $i &>/dev/null
 			  echo -n "."
 			done
 			echo ""
@@ -568,8 +567,8 @@ function popupdismiss()
 function autoinstaller()
 {
 	brewinstall
-	javainstall8
-#	javainstall11
+	# javainstall8
+	javainstall11
 	checkoutcode
 	eclipseinstall
 	eclipseplugins
@@ -630,8 +629,8 @@ function deleteEclipse
 {
 	echo "   * Deleting Eclipse installation"
         if [ -z "$PRETEND" ] ; then
-	  if [ -d /Applications/Eclipse\ Modeling.app/ ]; then
-		rm -rf /Applications/Eclipse\ Modeling.app
+	  if [ -d /Applications/Eclipse.app/ ]; then
+		rm -rf /Applications/Eclipse.app
 	  fi
         fi
 }
